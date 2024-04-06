@@ -41,9 +41,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="BmFont">
       <HintPath>..\..\..\assemblies_origin_dll\BmFont.dll</HintPath>
     </Reference>
@@ -85,9 +82,6 @@
     </Reference>
     <Reference Include="Pathoschild.Http.Client, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Pathoschild.Http.FluentClient.4.3.0\lib\netstandard2.0\Pathoschild.Http.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="PintailAndroid">
-      <HintPath>..\..\..\Pintail\PintailAndroid\bin\Debug\PintailAndroid.dll</HintPath>
     </Reference>
     <Reference Include="ReadOnlyCollectionsExtensions, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReadOnlyCollectionExtensions.1.5.0\lib\netstandard2.1\ReadOnlyCollectionsExtensions.dll</HintPath>
@@ -503,11 +497,20 @@
     <None Include="i18n\zh.json" />
     <None Include="packages.config" />
     <None Include="SMAPI.config.json" />
+    <None Include="UpdateDLLToAndroid.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="steam_appid.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Harmony\HarmonyAndroid\HarmonyAndroid.csproj">
+      <Project>{007b1d1a-90ef-4df0-a6dd-3a2376cf9333}</Project>
+      <Name>HarmonyAndroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Pintail\PintailAndroid\PintailAndroid.csproj">
+      <Project>{90fbd654-2122-4f00-b824-e8c0aa8f5998}</Project>
+      <Name>PintailAndroid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SMAPI.Toolkit.CoreInterfaces\SMAPI.Toolkit.CoreInterfaces.csproj">
       <Project>{7929e656-cb73-4b9a-aaab-7475a41a93b2}</Project>
       <Name>SMAPI.Toolkit.CoreInterfaces</Name>
@@ -528,7 +531,11 @@
     <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Android.2.88.7\build\monoandroid1.0\SkiaSharp.NativeAssets.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Android.2.88.7\build\monoandroid1.0\SkiaSharp.NativeAssets.Android.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>"C:\Users\narat\Desktop\Stardew Valley Android Xamarin\SMAPI Launcher\SMAPI-3.18.6\UpdateDLLToAndroid.cmd"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)UpdateDLLToAndroid.cmd"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
