@@ -99,19 +99,23 @@ namespace StardewModdingAPI
 #endif
 
         /// <summary>The path to the game folder.</summary>
+        //path return Folder of StardewModdingAPI.dll
+        //SMAPI-Game
         public static string GamePath { get; } = EarlyConstants.GamePath;
-
+        public static string SavesPath { get; } = GamePath.Replace("/SMAPI-Game", "");
+        public static string ExternalFilesDir => SavesPath.Replace("/Saves", "");
         /// <summary>The path to the game's <c>Content</c> folder.</summary>
         public static string ContentPath { get; } = Constants.GetContentFolderPath();
 
         /// <summary>The directory path containing Stardew Valley's app data.</summary>
-        public static string DataPath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StardewValley");
+        //public static string DataPath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StardewValley");
+        //fix fix not sure
+        public static string DataPath { get; } = Path.Combine(GamePath);
 
         /// <summary>The directory path in which error logs should be stored.</summary>
-        public static string LogDir { get; } = Path.Combine(Constants.DataPath, "ErrorLogs");
+        public static string LogDir { get; } = Path.Combine(ExternalFilesDir);
 
         /// <summary>The directory path where all saves are stored.</summary>
-        public static string SavesPath { get; } = Path.Combine(Constants.DataPath, "Saves");
 
         /// <summary>The name of the current save folder (if save info is available, regardless of whether the save file exists yet).</summary>
         public static string? SaveFolderName => Constants.GetSaveFolderName();

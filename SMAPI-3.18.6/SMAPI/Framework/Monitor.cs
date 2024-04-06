@@ -77,6 +77,7 @@ namespace StardewModdingAPI.Framework
             this.IgnoreChar = ignoreChar;
             this.IsVerbose = isVerbose;
             this.GetScreenIdForLog = getScreenIdForLog;
+            this.Log("Init LogFIle: " + logFile.Path, LogLevel.Debug);
         }
 
         /// <inheritdoc />

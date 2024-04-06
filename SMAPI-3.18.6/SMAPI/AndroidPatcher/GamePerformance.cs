@@ -27,7 +27,7 @@ namespace StardewModdingAPI.AndroidPatcher
             doUpdateTimer.Stop();
             if (Monitor != null && Game1.ticks % 60 == 0)
             {
-                Monitor.Log("Update() time: " + doUpdateTimer.Elapsed.TotalMilliseconds + "ms", LogLevel.Info);
+                //Monitor.Log("Update() time: " + doUpdateTimer.Elapsed.TotalMilliseconds + "ms", LogLevel.Info);
             }
         }
 
@@ -44,7 +44,7 @@ namespace StardewModdingAPI.AndroidPatcher
             doDrawTimer.Stop();
             if (Monitor != null && Game1.ticks % 60 == 0)
             {
-                Monitor.Log("Draw() time: " + doDrawTimer.Elapsed.TotalMilliseconds + "ms", LogLevel.Info);
+                //Monitor.Log("Draw() time: " + doDrawTimer.Elapsed.TotalMilliseconds + "ms", LogLevel.Info);
             }
         }
 
@@ -60,6 +60,8 @@ namespace StardewModdingAPI.AndroidPatcher
         static void PostfixTick()
         {
             tickTimer.Stop();
+
+            return;
             if (Monitor != null && Game1.ticks % 60 == 0)
             {
                 Monitor.Log("Tick() time: " + tickTimer.Elapsed.TotalMilliseconds + "ms", LogLevel.Info);

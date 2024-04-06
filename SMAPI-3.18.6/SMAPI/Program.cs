@@ -31,6 +31,10 @@ namespace StardewModdingAPI
         public static void RunMain()
         {
             AndroidLog.Log("Start RunMain()");
+            AndroidLog.Log("Game path: " + Constants.GamePath);
+            AndroidLog.Log("files dir: " + Constants.ExternalFilesDir);
+            AndroidLog.Log("save path: " + Constants.SavesPath);
+            AndroidLog.Log("log path: " + Constants.LogDir);
             new Harmony("SMAPI.Program").PatchAll();
             AppDomain.CurrentDomain.AssemblyResolve += Program.CurrentDomain_AssemblyResolve;
 
