@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SMAPI.Internal", "SMAPI-3.18.6\SMAPI.Internal\SMAPI.Internal.shproj", "{85208F8D-6FD1-4531-BE05-7142490F59FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMAPI", "SMAPI-3.18.6\SMAPI\SMAPI.csproj", "{68CF088E-D715-4438-AFDE-FEFDA931BD63}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SMAPI.Internal.Patching", "SMAPI-3.18.6\SMAPI.Internal.Patching\SMAPI.Internal.Patching.shproj", "{6C16E948-3E5C-47A7-BF4B-07A7469A87A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMAPI.Toolkit", "SMAPI-3.18.6\SMAPI.Toolkit\SMAPI.Toolkit.csproj", "{BDBB3C18-0619-40F2-8F2F-A5656EC1AD0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMAPI.Toolkit.CoreInterfaces", "SMAPI-3.18.6\SMAPI.Toolkit.CoreInterfaces\SMAPI.Toolkit.CoreInterfaces.csproj", "{7929E656-CB73-4B9A-AAAB-7475A41A93B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMAPILoader", "SMAPILoader\SMAPILoader.csproj", "{6F777CEF-1BE4-4800-801B-364436AF03C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68CF088E-D715-4438-AFDE-FEFDA931BD63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CF088E-D715-4438-AFDE-FEFDA931BD63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68CF088E-D715-4438-AFDE-FEFDA931BD63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68CF088E-D715-4438-AFDE-FEFDA931BD63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDBB3C18-0619-40F2-8F2F-A5656EC1AD0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDBB3C18-0619-40F2-8F2F-A5656EC1AD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDBB3C18-0619-40F2-8F2F-A5656EC1AD0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDBB3C18-0619-40F2-8F2F-A5656EC1AD0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7929E656-CB73-4B9A-AAAB-7475A41A93B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7929E656-CB73-4B9A-AAAB-7475A41A93B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7929E656-CB73-4B9A-AAAB-7475A41A93B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7929E656-CB73-4B9A-AAAB-7475A41A93B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F777CEF-1BE4-4800-801B-364436AF03C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F777CEF-1BE4-4800-801B-364436AF03C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F777CEF-1BE4-4800-801B-364436AF03C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F777CEF-1BE4-4800-801B-364436AF03C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA8C3C5E-8291-49BE-91D4-E59720503C63}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SMAPI-3.18.6\SMAPI.Internal.Patching\SMAPI.Internal.Patching.projitems*{68cf088e-d715-4438-afde-fefda931bd63}*SharedItemsImports = 4
+		SMAPI-3.18.6\SMAPI.Internal\SMAPI.Internal.projitems*{68cf088e-d715-4438-afde-fefda931bd63}*SharedItemsImports = 4
+		SMAPI-3.18.6\SMAPI.Internal.Patching\SMAPI.Internal.Patching.projitems*{6c16e948-3e5c-47a7-bf4b-07a7469a87a5}*SharedItemsImports = 13
+		SMAPI-3.18.6\SMAPI.Internal\SMAPI.Internal.projitems*{85208f8d-6fd1-4531-be05-7142490f59fe}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
