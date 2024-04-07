@@ -14,6 +14,7 @@ namespace StardewModdingAPI.AndroidExtens
         public static string DownloadDir => Path.Combine(ExternalPublicDir, "Download");
         public static string StardewFarmMigratePath => Path.Combine(ExternalPublicDir, "StardewValley");
         public static string SMAPI_GamePath => Path.Combine(StardewFarmMigratePath, "SMAPI-Game");
+        public static string Mods => Path.Combine(SMAPI_GamePath, "Mods");
 
         public static int RequestCode_Pick = "FolderPicer_Pick".GetHashCode();
         static TaskCompletionSource<Uri> taskFolderPickerResult;

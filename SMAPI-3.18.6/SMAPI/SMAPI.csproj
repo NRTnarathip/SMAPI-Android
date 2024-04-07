@@ -179,6 +179,7 @@
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />
     <Compile Include="AndroidExtens\OptionsPagePatcher.cs" />
+    <Compile Include="AndroidExtens\PathTool.cs" />
     <Compile Include="AndroidExtens\SaveGamePatcher.cs" />
     <Compile Include="AndroidExtens\SMAPIUpdateTool.cs" />
     <Compile Include="AndroidExtens\StringSplitPatcher.cs" />

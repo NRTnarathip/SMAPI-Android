@@ -1,6 +1,8 @@
 ﻿using Android.Support.V4.Provider;
+using Newtonsoft.Json;
 using StardewModdingAPI.AndroidExtensions;
 using StardewValley;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +12,18 @@ namespace StardewModdingAPI.AndroidExtens
 {
     public static class SMAPIUpdateTool
     {
+        public struct ModManifest
+        {
+            public string Name;
+            public string Version;
+            public string MinimumApiVersion;
+            public string UniqueID;
+
+            internal bool IsNewer(ModManifest targetManifest)
+            {
+                return new SemanticVersion(this.Version).IsNewerThan(new SemanticVersion(targetManifest.Version));
+            }
+        }
         //call this when on first enter TitleMenu
         public static void CheckAllUpdate()
         {
@@ -97,11 +111,70 @@ namespace StardewModdingAPI.AndroidExtens
             {
                 var folder = await FolderPicker.Pick();
                 SyncMods(folder);
+                MainActivity.instance.Finish();
             });
         }
         static void SyncMods(Uri uri)
         {
-            var doc = uri.ToDocumentFile();
+            var smapiDocFile = uri.ToDocument();
+            var path = smapiDocFile.Name;
+            if (path.GetFolderName() != "SMAPI-Game")
+                return;
+
+            var smapiFiles = smapiDocFile.ListFiles();
+            var modsDocFile = smapiFiles.SingleOrDefault(file => file.Name == "Mods");
+            if (modsDocFile == null)
+            {
+                AndroidLog.Log("not found folder mods");
+                return;
+            }
+            var externalMods = modsDocFile.ListFiles().Where(dir => dir.IsDirectory);
+            var externalModsMap = new HashSet<string>(externalMods.Select(dir => dir.Name));
+            var currentMods = Directory.GetDirectories(Constants.ModsPath);
+            var currentModsMap = new HashSet<string>(currentMods.Select(dir => dir.GetFolderName()));
+
+            foreach (var mod in currentModsMap)
+            {
+                if (!externalModsMap.Contains(mod))
+                {
+                    Directory.Delete(Constants.ModsPath.combine(mod), true);
+                }
+            }
+
+
+            //add and update
+            List<string> modsAddOrUpdate = new List<string>();
+            string externalModsPath = FolderPicker.Mods;
+            foreach (var modDocFile in externalMods)
+            {
+                //no need to check folder mod it's correct
+                //detect mod new version
+                var modFiles = modDocFile.ListFiles();
+                var manifestDocFile = modFiles.SingleOrDefault(f => f.Name == "manifest.json");
+                if (manifestDocFile == null)
+                    continue;
+
+                var manifestContent = manifestDocFile.ReadFile();
+                var manifest = JsonConvert.DeserializeObject<ModManifest>(manifestContent);
+
+                var modPathInGameFiles = Constants.ModsPath.combine(modDocFile.Name);
+                //check if exists mod
+                if (Directory.Exists(modPathInGameFiles))
+                {
+                    //check mod version
+                    var manifestGameFilesPath = modPathInGameFiles.combine("manifest.json");
+                    if (!File.Exists(manifestGameFilesPath)) continue;
+
+                    var manifestInGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
+                    AndroidLog.Log("mod external version: " + manifest.Version);
+                    AndroidLog.Log("mod in game version: " + manifestInGameFiles.Version);
+                    if (!manifest.IsNewer(manifestInGameFiles))
+                        continue;
+                }
+
+                modDocFile.CopyTo(modPathInGameFiles);
+                AndroidLog.Log("done copy mod to: " + modPathInGameFiles);
+            }
         }
     }
 }

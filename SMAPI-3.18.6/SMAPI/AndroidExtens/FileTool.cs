@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Support.V4.Provider;
 using Java.IO;
+using StardewModdingAPI.AndroidExtens;
 using StardewValley;
 using System;
 using System.IO;
@@ -10,7 +11,7 @@ namespace StardewModdingAPI.AndroidExtensions;
 public static class FileTool
 {
     public static string DownloadDir = Android.OS.Environment.GetExternalStoragePublicDirectory("") + "/Download";
-    public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
+    public static void SharpCopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
     {
         // Get information about the source directory
         var dir = new DirectoryInfo(sourceDir);
@@ -38,15 +39,23 @@ public static class FileTool
             foreach (DirectoryInfo subDir in dirs)
             {
                 string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                CopyDirectory(subDir.FullName, newDestinationDir, true);
+                SharpCopyDirectory(subDir.FullName, newDestinationDir, true);
             }
         }
     }
-    public static void FileCopy(DocumentFile source, string dest)
+    public static void FileCopy(DocumentFile source, string path)
     {
+        if (source.IsFile == false) return;
+
+        //delete first
+        if (System.IO.File.Exists(path))
+        {
+            System.IO.File.Delete(path);
+        }
+
         using Stream stream = MainActivity.instance.ContentResolver.OpenInputStream(source.Uri);
-        using FileOutputStream fileOutputStream = new FileOutputStream(dest);
-        byte[] buffer = new byte[4096];
+        using FileOutputStream fileOutputStream = new FileOutputStream(path);
+        byte[] buffer = new byte[1024];
         int len;
         while ((len = stream.Read(buffer)) > 0)
         {
@@ -75,9 +84,46 @@ public static class FileTool
             }
         }
     }
-    public static DocumentFile ToDocumentFile(this Android.Net.Uri uri)
+    public static DocumentFile ToDocument(this Android.Net.Uri uri)
     {
-        return DocumentFile.FromSingleUri(Application.Context, uri);
+        return DocumentFile.FromTreeUri(Application.Context, uri);
+    }
+    public static byte[] ToBytes(this DocumentFile file)
+    {
+        using Stream stream = MainActivity.instance.ContentResolver.OpenInputStream(file.Uri);
+        using MemoryStream mem = new MemoryStream();
+        stream.CopyTo(mem);
+        return mem.ToArray();
+    }
+    public static string ReadFile(this DocumentFile file)
+    {
+        using var stream = MainActivity.instance.ContentResolver.OpenInputStream(file.Uri);
+        using (StreamReader reader = new StreamReader(stream))
+        {
+            return reader.ReadToEnd();
+        }
+    }
+
+    public static void CopyTo(this DocumentFile docFile, string path)
+    {
+        if (docFile.IsDirectory)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
+        var files = docFile.ListFiles();
+        foreach (var file in files)
+        {
+            var destPath = path.combine(file.Name);
+            if (file.IsDirectory)
+            {
+                file.CopyTo(destPath);
+                continue;
+            }
+            FileCopy(file, destPath);
+            AndroidLog.Log("done copy file: " + destPath);
+        }
     }
 }
 

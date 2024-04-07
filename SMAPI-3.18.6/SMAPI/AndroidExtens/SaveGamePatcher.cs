@@ -25,7 +25,7 @@ public class SaveGamePatcher
             AndroidLog.Log("found save: " + srcFolderPath);
             var destFolderPath = Path.Combine(outputPath, folderName);
             AndroidLog.Log($"try clone {srcFolderPath} to {destFolderPath}");
-            FileTool.CopyDirectory(srcFolderPath, destFolderPath);
+            FileTool.SharpCopyDirectory(srcFolderPath, destFolderPath);
         }
         AndroidLog.Log("Done Backup Saves..");
     }
