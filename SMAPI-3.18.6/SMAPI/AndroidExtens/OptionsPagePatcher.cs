@@ -1,10 +1,9 @@
 ﻿using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
+using StardewModdingAPI.AndroidExtensions;
 using StardewValley.Menus;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
+namespace StardewModdingAPI.AndroidExtens;
 
 public class OptionsPagePatcher
 {
@@ -29,26 +28,13 @@ public class OptionsPagePatcher
         FieldInfo optionsField = optionsPageType.GetField("options", BindingFlags.NonPublic | BindingFlags.Instance);
         var options = (List<OptionsElement>)optionsField.GetValue(page);
 
-        var buttonRequestFarmMigrate = new OptionsButton("Request Farm Migrate", OnClickRequestFarmMigrate);
-
         var items = new List<OptionsElement>();
-        items.Add(buttonRequestFarmMigrate);
-        items.Add(new OptionsButton("Delete & Backup Mods", OnClickDeleteAndBackupMods));
-
-        options.InsertRange(3, items);
+        items.Add(new OptionsButton("Saves Backup To Download", OnClickBackupSaves));
+        options.InsertRange(3, items);//insert memnu after button "Saves Backup" original game
     }
 
-    static void OnClickDeleteAndBackupMods()
+    private static void OnClickBackupSaves()
     {
-        //move folder mods to documents
-        var modsDir = Constants.ModsPath;
-        var downloadDir = Android.OS.Environment.GetExternalStoragePublicDirectory("") + "/Download/Mods-Backup";
-        FileTool.CopyFolder(modsDir, downloadDir);
-        Directory.Delete(modsDir, true);
-    }
-    private static void OnClickRequestFarmMigrate()
-    {
-        AndroidLog.Log("On click request farm migrate");
-        MainActivity.instance.CheckStorageMigration();
+        SaveGamePatcher.BackupSavesToDownload();
     }
 }

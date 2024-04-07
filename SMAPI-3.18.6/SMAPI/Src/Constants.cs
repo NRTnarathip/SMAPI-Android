@@ -45,14 +45,13 @@ namespace StardewModdingAPI
         /// <summary>The game framework running the game.</summary>
         internal static GameFramework GameFramework { get; } = GameFramework.MonoGame;
 
-        /// <summary>The game's assembly name.</summary>
-        internal static string GameAssemblyName { get; } = "Stardew Valley";
-
         /// <summary>The <see cref="Context.ScreenId"/> value which should appear in the SMAPI log, if any.</summary>
         internal static int? LogScreenId { get; set; }
 
         /// <summary>SMAPI's current raw semantic version.</summary>
-        internal static string RawApiVersion = "3.18.6";
+        //internal static string RawApiVersion = "3.19.0";
+        public static string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        internal static string RawApiVersion = AssemblyVersion.Substring(0, AssemblyVersion.Length - 2);
     }
 
     /// <summary>Contains SMAPI's constants and assumptions.</summary>

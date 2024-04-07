@@ -23,6 +23,9 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -31,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -155,19 +159,30 @@
     <Reference Include="TMXTile">
       <HintPath>..\..\..\assemblies_zaneyork\TMXTile.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Android.Support.DocumentFile">
+      <HintPath>..\..\..\assemblies_origin_dll\Xamarin.Android.Support.DocumentFile.dll</HintPath>
+    </Reference>
     <Reference Include="xTile">
       <HintPath>..\..\..\assemblies_origin_dll\xTile.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AndroidPatcher\AndroidExtensions.cs" />
-    <Compile Include="AndroidPatcher\ConsoleHook.cs" />
-    <Compile Include="AndroidPatcher\Game1Rewrite.cs" />
-    <Compile Include="AndroidPatcher\GamePerformance.cs" />
-    <Compile Include="AndroidPatcher\OnCreatePartTwoPatcher.cs" />
-    <Compile Include="AndroidPatcher\OptionsPagePatcher.cs" />
-    <Compile Include="AndroidPatcher\SaveGamePatcher.cs" />
-    <Compile Include="AndroidPatcher\StringSplitPatcher.cs" />
+    <Compile Include="AndroidExtens\AndroidExtensions.cs" />
+    <Compile Include="AndroidExtens\BuildDate.cs" />
+    <Compile Include="AndroidExtens\ConsoleHook.cs" />
+    <Compile Include="AndroidExtens\FileTool.cs" />
+    <Compile Include="AndroidExtens\FolderCmdTool.cs" />
+    <Compile Include="AndroidExtens\FolderPicker.cs" />
+    <Compile Include="AndroidExtens\Game1Rewrite.cs" />
+    <Compile Include="AndroidExtens\GamePerformance.cs" />
+    <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
+    <Compile Include="AndroidExtens\NotifyTool.cs" />
+    <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />
+    <Compile Include="AndroidExtens\OptionsPagePatcher.cs" />
+    <Compile Include="AndroidExtens\SaveGamePatcher.cs" />
+    <Compile Include="AndroidExtens\SMAPIUpdateTool.cs" />
+    <Compile Include="AndroidExtens\StringSplitPatcher.cs" />
+    <Compile Include="AndroidExtens\TitleMenuPatcher.cs" />
     <Compile Include="Src\Constants.cs" />
     <Compile Include="Src\ContentSource.cs" />
     <Compile Include="Src\Context.cs" />

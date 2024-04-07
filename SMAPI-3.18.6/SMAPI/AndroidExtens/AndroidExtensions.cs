@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -19,20 +18,6 @@ public static class AndroidExtensions
 public static class AndroidLog
 {
     public static void Log(string msg) => Android.Util.Log.Debug("NRT Debug", "[NRT Debug] " + msg);
-}
-public static class FileTool
-{
-    public static void CopyFolder(string sourcePath, string targetPath)
-    {
-        foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-        {
-            Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
-        }
-        foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-        {
-            File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
-        }
-    }
 }
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
