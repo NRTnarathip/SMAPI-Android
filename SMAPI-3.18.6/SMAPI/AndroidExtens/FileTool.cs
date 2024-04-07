@@ -47,15 +47,15 @@ public static class FileTool
     {
         if (source.IsFile == false) return;
 
-        //delete first
         if (System.IO.File.Exists(path))
-        {
             System.IO.File.Delete(path);
-        }
 
+        //delete first
         using Stream stream = MainActivity.instance.ContentResolver.OpenInputStream(source.Uri);
         using FileOutputStream fileOutputStream = new FileOutputStream(path);
-        byte[] buffer = new byte[1024];
+        const int bufferOneKBSize = 1024;
+        const int bufferSize = bufferOneKBSize * 128;
+        byte[] buffer = new byte[bufferSize];
         int len;
         while ((len = stream.Read(buffer)) > 0)
         {
@@ -122,7 +122,6 @@ public static class FileTool
                 continue;
             }
             FileCopy(file, destPath);
-            AndroidLog.Log("done copy file: " + destPath);
         }
     }
 }

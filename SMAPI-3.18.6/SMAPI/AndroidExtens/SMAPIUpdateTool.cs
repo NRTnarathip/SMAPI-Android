@@ -3,9 +3,11 @@ using Newtonsoft.Json;
 using StardewModdingAPI.AndroidExtensions;
 using StardewValley;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Uri = Android.Net.Uri;
 
 namespace StardewModdingAPI.AndroidExtens
@@ -33,18 +35,29 @@ namespace StardewModdingAPI.AndroidExtens
             {
                 AlertUpdateSMAPI();
             }
-            else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
-            {
-                AlertUpdateMods();
-            }
             else if (FolderCmdTool.CheckFolderCmd("BackupSaves"))
             {
                 AlertBackupSaves();
+            }
+            else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
+            {
+                AlertUpdateMods();
             }
         }
 
         private static void AlertBackupSaves()
         {
+            NotifyTool.ConfirmOnly("Backup Saves", "please choose folder for backup saves", () =>
+            {
+                BackupSavesAsync();
+            });
+        }
+        public static async Task BackupSavesAsync()
+        {
+            var uri = await FolderPicker.Pick();
+            var folderToBackup = uri.ToDocument();
+            AndroidLog.Log("on select folder backup: " + folderToBackup.Name);
+
 
         }
 
@@ -117,8 +130,7 @@ namespace StardewModdingAPI.AndroidExtens
         static void SyncMods(Uri uri)
         {
             var smapiDocFile = uri.ToDocument();
-            var path = smapiDocFile.Name;
-            if (path.GetFolderName() != "SMAPI-Game")
+            if (smapiDocFile.Name != "SMAPI-Game")
                 return;
 
             var smapiFiles = smapiDocFile.ListFiles();
@@ -165,15 +177,20 @@ namespace StardewModdingAPI.AndroidExtens
                     var manifestGameFilesPath = modPathInGameFiles.combine("manifest.json");
                     if (!File.Exists(manifestGameFilesPath)) continue;
 
-                    var manifestInGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
+                    var manifestGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
                     AndroidLog.Log("mod external version: " + manifest.Version);
-                    AndroidLog.Log("mod in game version: " + manifestInGameFiles.Version);
-                    if (!manifest.IsNewer(manifestInGameFiles))
+                    AndroidLog.Log("mod in game version: " + manifestGameFiles.Version);
+                    //sync with any version
+                    if (manifest.Version == manifestGameFiles.Version)
                         continue;
                 }
-
+                var st = Stopwatch.StartNew();
+                //sync new mod with any version
+                if (Directory.Exists(modPathInGameFiles))
+                    Directory.Delete(modPathInGameFiles, true);
                 modDocFile.CopyTo(modPathInGameFiles);
-                AndroidLog.Log("done copy mod to: " + modPathInGameFiles);
+                st.Stop();
+                AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
             }
         }
     }
