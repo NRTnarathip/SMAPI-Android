@@ -7,7 +7,7 @@ namespace StardewModdingAPI.AndroidExtens
     public class NotifyTool
     {
         public static Activity Activity => MainActivity.instance;
-        public static void Confirm(string title, string msg, System.Action<bool> callback, string btnOk = "Yes", string btnCancel = "No")
+        public static void Confirm(string title, string msg, System.Action<bool> callback, string btnOk = "Confirm", string btnCancel = "No")
         {
             AlertDialog.Builder builder = new(Activity);
             builder.SetTitle(title);

@@ -1,7 +1,6 @@
-﻿using StardewModdingAPI.AndroidExtens;
-using System;
+﻿using Android.OS;
+using StardewModdingAPI.AndroidExtens;
 using System.IO;
-using System.Linq;
 
 namespace StardewModdingAPI.AndroidExtensions;
 
@@ -10,46 +9,29 @@ public class SaveGamePatcher
     public static void Init()
     {
     }
-    public static event Action OnBackupSaveDone;
-    public static event Action OnBackupSaveFail;
-    static void BackupSavesToDownloadInternal()
+    public static bool CanBackupSaves()
     {
-        AndroidLog.Log("On Backup Saves..");
-        var outputPath = Path.Combine(FileTool.DownloadDir, "Saves-Backup");
-        var savesPath = Constants.SavesPath;
-        foreach (var srcFolderPath in Directory.EnumerateDirectories(savesPath, "*.*", SearchOption.TopDirectoryOnly))
+        //android 13,14
+        return Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu;
+    }
+    public static void BackupSaves()
+    {
+        if (!CanBackupSaves())
+            return;
+        var saves = Directory.GetDirectories(Constants.SavesPath);
+        AndroidLog.Log("try backup saves");
+        foreach (var currentSavePath in saves)
         {
-            var folderName = srcFolderPath.Split("/").Last();
-            if (folderName == "SMAPI-Game") continue;
+            var saveName = currentSavePath.GetFolderName();
+            if (saveName == "SMAPI-Game") continue;
 
-            AndroidLog.Log("found save: " + srcFolderPath);
-            var destFolderPath = Path.Combine(outputPath, folderName);
-            AndroidLog.Log($"try clone {srcFolderPath} to {destFolderPath}");
-            FileTool.SharpCopyDirectory(srcFolderPath, destFolderPath);
+            AndroidLog.Log("Found save path: " + currentSavePath);
+            var fileName = saveName + ".zip";
+            var filePath = Constants.SavesPath.combine(fileName);
+            FileTool.CreateZipFile(filePath, currentSavePath);
+            var destPath = FolderPicker.DownloadDir.combine(fileName);
+            File.Copy(filePath, destPath, true);
+            AndroidLog.Log("Done save path: " + destPath);
         }
-        AndroidLog.Log("Done Backup Saves..");
-    }
-    public static int FolderPickerBackuSaves = "FolderPickerBackupSaves".GetHashCode();
-    public static void RequestFolder(string path)
-    {
-    }
-    public static void BackupSavesToDownload()
-    {
-        NotifyTool.Confirm("Saves Backup", "Are you sure to backup saves in folder download", (confirm) =>
-        {
-            if (!confirm)
-            {
-                OnBackupSaveFail?.Invoke();
-                return;
-            }
-            //select folder
-
-
-            BackupSavesToDownloadInternal();
-            OnBackupSaveDone?.Invoke();
-
-            //notify save
-            NotifyTool.Notify("Successfully Backup Saves", "done saves backup in folder download");
-        });
     }
 }

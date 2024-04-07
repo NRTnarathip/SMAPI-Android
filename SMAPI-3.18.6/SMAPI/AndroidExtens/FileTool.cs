@@ -1,5 +1,8 @@
 ﻿using Android.App;
+using Android.OS;
 using Android.Support.V4.Provider;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using Java.IO;
 using StardewModdingAPI.AndroidExtens;
 using StardewValley;
@@ -10,6 +13,7 @@ namespace StardewModdingAPI.AndroidExtensions;
 
 public static class FileTool
 {
+
     public static string DownloadDir = Android.OS.Environment.GetExternalStoragePublicDirectory("") + "/Download";
     public static void SharpCopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
     {
@@ -60,6 +64,26 @@ public static class FileTool
         while ((len = stream.Read(buffer)) > 0)
         {
             fileOutputStream.Write(buffer, 0, len);
+        }
+    }
+    public static void CreateFileFromFilePath(this DocumentFile folderDocFile, string fileName, string mimeType, string srcPath, string destFolderPath)
+    {
+        if (folderDocFile.IsFile) return;
+
+        var newOutputDocFile = folderDocFile.CreateFile(mimeType, fileName);
+
+        var destFilePath = destFolderPath.combine(newOutputDocFile.Name);
+        using var sourceStream = System.IO.File.OpenRead(srcPath);
+        ParcelFileDescriptor fileDesc = MainActivity.instance.ContentResolver.OpenFileDescriptor(newOutputDocFile.Uri, "w");
+        using var outputStream = new FileOutputStream(fileDesc.FileDescriptor);
+
+        const int bufferOneKBSize = 1024;
+        const int bufferSize = bufferOneKBSize * 128;
+        byte[] buffer = new byte[bufferSize];
+        int len;
+        while ((len = sourceStream.Read(buffer)) > 0)
+        {
+            outputStream.Write(buffer, 0, len);
         }
     }
     public static bool IsSame(DocumentFile file1, string file2)
@@ -122,6 +146,55 @@ public static class FileTool
                 continue;
             }
             FileCopy(file, destPath);
+        }
+    }
+
+
+    //zip tool
+    public static void CreateZipFile(string zipPath, string folderPath)
+    {
+        using (FileStream fsOut = System.IO.File.Create(zipPath))
+        {
+            using (ZipOutputStream zipStream = new ZipOutputStream(fsOut))
+            {
+                // Set the compression level (0-9, 9 being the highest compression)
+                zipStream.SetLevel(9);
+                FileTool.AddDirectoryToZip(folderPath, zipStream, folderPath.GetFolderName());
+            }
+        }
+    }
+    public static void AddDirectoryToZip(string sourceDirectory, ZipOutputStream zipStream, string parentFolderName)
+    {
+        string[] files = Directory.GetFiles(sourceDirectory);
+
+        foreach (string file in files)
+        {
+            // Create a ZipEntry object representing the file
+            ZipEntry entry = new ZipEntry(Path.Combine(parentFolderName, Path.GetFileName(file)));
+
+            // Set the file time and size
+            entry.DateTime = DateTime.Now;
+            FileInfo fi = new FileInfo(file);
+            entry.Size = fi.Length;
+
+            // Add the file entry to the zip stream
+            zipStream.PutNextEntry(entry);
+
+            // Copy the file contents to the zip stream
+            using (FileStream fs = System.IO.File.OpenRead(file))
+            {
+                byte[] buffer = new byte[4096];
+                StreamUtils.Copy(fs, zipStream, buffer);
+            }
+
+            zipStream.CloseEntry();
+        }
+
+        // Recursively add subdirectories
+        string[] directories = Directory.GetDirectories(sourceDirectory);
+        foreach (string directory in directories)
+        {
+            AddDirectoryToZip(directory, zipStream, Path.Combine(parentFolderName, Path.GetFileName(directory)));
         }
     }
 }

@@ -39,27 +39,67 @@ namespace StardewModdingAPI.AndroidExtens
             {
                 AlertBackupSaves();
             }
+            else if (FolderCmdTool.CheckFolderCmd("SyncSave"))
+            {
+                AlertSyncSave();
+            }
             else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
             {
                 AlertUpdateMods();
             }
         }
 
-        private static void AlertBackupSaves()
+        private static void AlertSyncSave()
         {
             NotifyTool.ConfirmOnly("Backup Saves", "please choose folder for backup saves", () =>
             {
-                BackupSavesAsync();
+                SyncSaveAsync();
             });
         }
-        public static async Task BackupSavesAsync()
+
+        private static async Task SyncSaveAsync()
         {
             var uri = await FolderPicker.Pick();
-            var folderToBackup = uri.ToDocument();
-            AndroidLog.Log("on select folder backup: " + folderToBackup.Name);
 
-
+            var docFile = uri.ToDocument();
+            var files = docFile.ListFiles();
+            foreach (var file in files)
+            {
+                if (!file.IsFile)
+                    continue;
+                if (!file.Name.Contains(".zip")) continue;
+                var zipFileName = file.Name;
+                var splitFileName = zipFileName.Split("_");
+                if (splitFileName.Length == 2)
+                {
+                    //look like save mod
+                    if (int.TryParse(splitFileName[1], out int savehash))
+                    {
+                        AndroidLog.Log("found save: " + zipFileName + ", save hash: " + savehash);
+                    }
+                }
+            }
         }
+
+        private static void AlertBackupSaves()
+        {
+            if (!SaveGamePatcher.CanBackupSaves())
+                return;
+
+            NotifyTool.ConfirmOnly("Backup Saves", "Are you sure to backup saves in folder Download", () =>
+            {
+                //BackupSaves();
+                SaveGamePatcher.BackupSaves();
+                MainActivity.instance.Finish();
+            });
+        }
+        //public static async void BackupSaves()
+        //{
+        //    var uri = await FolderPicker.Pick();
+        //    var folderToBackup = uri.ToDocument();
+        //    AndroidLog.Log("on select folder backup: " + folderToBackup.Name);
+        //    SaveGamePatcher.BackupSaves(uri);
+        //}
 
         public static void AlertUpdateSMAPI()
         {
