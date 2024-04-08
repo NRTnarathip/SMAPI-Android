@@ -75,9 +75,6 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\assemblies_origin_dll\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="MonoMod.Common, Version=22.6.3.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MonoMod.Common.22.6.3.1\lib\netstandard2.0\MonoMod.Common.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
       <Private>True</Private>
     </Reference>

@@ -96,7 +96,7 @@ namespace StardewModdingAPI.AndroidExtens
 
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.ConfirmOnly("Check Update SMAPI", "choose folder SMAPI-Game for check & update", async () =>
+            NotifyTool.ConfirmOnly("Check Update SMAPI", "choose folder SMAPI-3.20.4++ for check & update", async () =>
             {
                 AndroidLog.Log("Start folder picker");
                 var pick = await FolderPicker.Pick();
@@ -107,7 +107,7 @@ namespace StardewModdingAPI.AndroidExtens
         static void UpdateSMAPI(Uri uri)
         {
             var folderPick = uri.ToDocument();
-            if (folderPick.Name != "SMAPI-Game")
+            if (!folderPick.Name.StartsWith("SMAPI-"))
                 return;
 
             var filesInFolderPicker = folderPick.ListFiles();
