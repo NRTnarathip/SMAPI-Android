@@ -1,5 +1,4 @@
-﻿using Android.Support.V4.Provider;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StardewModdingAPI.AndroidExtensions;
 using StardewModdingAPI.Framework;
 using StardewValley;
@@ -39,14 +38,15 @@ namespace StardewModdingAPI.AndroidExtens
             {
                 AlertBackupSaves();
             }
+
             //else if (FolderCmdTool.CheckFolderCmd("SyncSave"))
             //{
             //    AlertSyncSave();
             //}
-            else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
-            {
-                AlertUpdateMods();
-            }
+            //else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
+            //{
+            //    AlertUpdateMods();
+            //}
         }
 
         private static void AlertSyncSave()
@@ -96,10 +96,8 @@ namespace StardewModdingAPI.AndroidExtens
 
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.Confirm("Check Update SMAPI", "choose folder SMAPI-Game for check & update", async (confirm) =>
+            NotifyTool.ConfirmOnly("Check Update SMAPI", "choose folder SMAPI-Game for check & update", async () =>
             {
-                if (!confirm) return;
-
                 AndroidLog.Log("Start folder picker");
                 var pick = await FolderPicker.Pick();
                 UpdateSMAPI(pick);
@@ -108,44 +106,52 @@ namespace StardewModdingAPI.AndroidExtens
         }
         static void UpdateSMAPI(Uri uri)
         {
-            var docFile = DocumentFile.FromTreeUri(MainActivity.instance.ApplicationContext, uri);
-            var files = docFile.ListFiles();
-            //delete folder name cmd
+            var folderPick = uri.ToDocument();
+            if (folderPick.Name != "SMAPI-Game")
+                return;
 
-            //replace all .dll
+            var filesInFolderPicker = folderPick.ListFiles();
             var gamePath = Constants.GamePath;
-            var smapiFile = files.SingleOrDefault(file => file.Name.Contains("StardewModdingAPI.dll"));
+            //check you are picker folder smapi modules correct
+            var smapiFile = filesInFolderPicker.SingleOrDefault(file => file.Name.Contains("StardewModdingAPI.dll"));
             if (smapiFile != null)
             {
-                var dest = Path.Combine(gamePath, smapiFile.Name);
-                //unuse
-                //use Date time + AssemblyVersion instead 
-                //if (!FileTool.IsSame(smapiFile, dest))
+                ISemanticVersion targetFileVersion;
+                using (var stream = MainActivity.instance.ContentResolver.OpenInputStream(smapiFile.Uri))
                 {
-                    ISemanticVersion targetFileVersion;
-                    using (var stream = MainActivity.instance.ContentResolver.OpenInputStream(smapiFile.Uri))
+                    using var memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+                    var asm = Assembly.Load(memoryStream.ToArray());
+                    var fileVersion = asm.GetName().Version.ToString();
+                    targetFileVersion = new Toolkit.SemanticVersion(fileVersion.Substring(0, fileVersion.Length - 2));
+                }
+
+                //check file build version
+                var currentVersion = Constants.ApiVersion;
+                AndroidLog.Log("Current Version: " + currentVersion);
+                AndroidLog.Log("Load File Version: " + targetFileVersion);
+                //update when newer or equal
+                if (targetFileVersion.IsNewerThan(currentVersion) || targetFileVersion.Equals(currentVersion))
+                {
+                    //please check file date
+                    AndroidLog.Log("Found Replace Version: " + targetFileVersion);
+                    //FileTool.FileCopy(smapiFile, dest);
+                    //copy all modules and rename file with postfix _New.dll
+                    foreach (var file in filesInFolderPicker)
                     {
-                        using var memoryStream = new MemoryStream();
-                        stream.CopyTo(memoryStream);
-                        var asm = Assembly.Load(memoryStream.ToArray());
-                        var fileVersion = asm.GetName().Version.ToString();
-                        targetFileVersion = new Toolkit.SemanticVersion(fileVersion.Substring(0, fileVersion.Length - 2));
+                        if (file.IsDirectory)
+                            continue;
+                        if (file.Name.Contains(".dll") == false)
+                            continue;
+                        var dest = Path.Combine(gamePath, file.Name.Replace(".dll", "_New.dll"));
+                        FileTool.CopyFile(file, dest);
+                        AndroidLog.Log("done copy file to: " + dest);
                     }
 
-                    //check file build version
-                    var currentBuild = Constants.ApiVersion;
-                    AndroidLog.Log("Current Version: " + currentBuild);
-                    AndroidLog.Log("Load File Version: " + targetFileVersion);
-                    if (targetFileVersion.IsNewerThan(currentBuild))
-                    {
-                        //please check file date
-                        AndroidLog.Log("Found New Version: " + targetFileVersion);
-                        FileTool.FileCopy(smapiFile, dest);
-                    }
-                    else
-                    {
-                        AndroidLog.Log("No need to update");
-                    }
+                }
+                else
+                {
+                    AndroidLog.Log("No need to update");
                 }
             }
             //bug touch screen game got crash
@@ -226,7 +232,7 @@ namespace StardewModdingAPI.AndroidExtens
                 //sync new mod with any version
                 if (Directory.Exists(modPathInGameFiles))
                     Directory.Delete(modPathInGameFiles, true);
-                modDocFile.CopyTo(modPathInGameFiles);
+                modDocFile.CopyDirectory(modPathInGameFiles);
                 st.Stop();
                 AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
             }

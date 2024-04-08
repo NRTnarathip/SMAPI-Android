@@ -62,10 +62,16 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.5" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="UpdateDLLToAndroid.cmd" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Users\narat\Desktop\Stardew Valley Android Xamarin\SMAPI Launcher\SMAPILoader\UpdateDLLToAndroid.cmd"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)UpdateDLLToAndroid"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

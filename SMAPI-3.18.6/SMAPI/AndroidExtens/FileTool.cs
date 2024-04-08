@@ -47,7 +47,7 @@ public static class FileTool
             }
         }
     }
-    public static void FileCopy(DocumentFile source, string path)
+    public static void CopyFile(DocumentFile source, string path)
     {
         if (source.IsFile == false) return;
 
@@ -128,24 +128,24 @@ public static class FileTool
         }
     }
 
-    public static void CopyTo(this DocumentFile docFile, string path)
+    public static void CopyDirectory(this DocumentFile docFile, string folderPath)
     {
         if (docFile.IsDirectory)
         {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
         }
 
         var files = docFile.ListFiles();
         foreach (var file in files)
         {
-            var destPath = path.combine(file.Name);
+            var destPath = folderPath.combine(file.Name);
             if (file.IsDirectory)
             {
-                file.CopyTo(destPath);
+                file.CopyDirectory(destPath);
                 continue;
             }
-            FileCopy(file, destPath);
+            CopyFile(file, destPath);
         }
     }
 
