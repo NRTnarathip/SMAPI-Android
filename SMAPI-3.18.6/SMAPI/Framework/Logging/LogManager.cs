@@ -174,27 +174,9 @@ namespace StardewModdingAPI.Framework.Logging
                 Thread.Sleep(1000 / 10);
         }
 
-        /// <summary>Show a 'press any key to exit' message, and exit when they press a key.</summary>
-        public void PressAnyKeyToExit()
-        {
-            this.Monitor.Log("Game has ended. Press any key to exit.", LogLevel.Info);
-            this.PressAnyKeyToExit(showMessage: false);
-        }
-
-        /// <summary>Show a 'press any key to exit' message, and exit when they press a key.</summary>
-        /// <param name="showMessage">Whether to print a 'press any key to exit' message to the console.</param>
-        public void PressAnyKeyToExit(bool showMessage)
-        {
-            if (showMessage)
-                this.Monitor.Log("Game has ended. Press any key to exit.");
-            Thread.Sleep(100);
-            Console.ReadKey();
-            Environment.Exit(0);
-        }
-
         /****
-        ** Crash/update handling
-        ****/
+       *** Crash/update handling
+       ****/
         /// <summary>Create a crash marker and duplicate the log into the crash log.</summary>
         public void WriteCrashLog()
         {

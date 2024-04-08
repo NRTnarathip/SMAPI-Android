@@ -14,7 +14,7 @@ public class SaveGamePatcher
         //android 13,14
         return Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu;
     }
-    public static void BackupSaves()
+    public static void BackupSavesToDownload()
     {
         if (!CanBackupSaves())
             return;

@@ -45,7 +45,7 @@ namespace StardewModdingAPI.Framework.Logging
         {
             // always use Windows-style line endings for convenience
             // (Linux/macOS editors are fine with them, Windows editors often require them)
-            this.Stream.Write(message + "\r\n");
+            this.Stream.WriteLine(message);
         }
 
         /// <summary>Release all resources.</summary>

@@ -11,7 +11,8 @@ namespace StardewModdingAPI.AndroidExtens
         //please call FolderPicker allow read & write permissions
         public static void DeleteFolderCmd(string cmd)
         {
-            var path = Path.Combine(FolderPicker.SMAPI_GamePath, cmd);
+            var path = Path.Combine(FolderPicker.SMAPI_GamePath, "CMD_" + cmd);
+
             if (Directory.Exists(path))
             {
                 Directory.Delete(path);

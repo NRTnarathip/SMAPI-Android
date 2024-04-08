@@ -291,7 +291,6 @@ namespace StardewModdingAPI.Framework
             catch (Exception ex)
             {
                 this.Monitor.Log($"SMAPI failed to initialize: {ex.GetLogSummary()}", LogLevel.Error);
-                this.LogManager.PressAnyKeyToExit();
                 return;
             }
 
@@ -308,13 +307,10 @@ namespace StardewModdingAPI.Framework
             {
                 this.IsGameRunning = true;
                 StardewValley.Program.releaseBuild = true;
-                Android.Util.Log.Debug("NRT Debug", "Done for wait game launch");
             }
             catch (Exception ex)
             {
-                Android.Util.Log.Debug("NRT Debug", "Catch Error try start game: " + ex.Message);
                 this.LogManager.LogFatalLaunchError(ex);
-                this.LogManager.PressAnyKeyToExit();
                 this.Dispose(isError: true);
             }
         }
