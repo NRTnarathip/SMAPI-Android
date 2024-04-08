@@ -84,24 +84,32 @@ namespace StardewModdingAPI.AndroidExtens
         private static void AlertBackupSaves()
         {
             if (!SaveGamePatcher.CanBackupSaves())
-                return;
-
-            NotifyTool.ConfirmOnly("Backup Saves", "Are you sure to backup saves in folder Download", () =>
             {
-                SaveGamePatcher.BackupSavesToDownload();
-                FolderCmdTool.DeleteFolderCmd("UpdateMods");
+                FolderCmdTool.DeleteFolderCmd("BackupSaves");
+                return;
+            }
+
+            NotifyTool.Confirm("Backup Saves", "Are you sure to backup saves in folder Download", (isConfirm) =>
+            {
+                if (isConfirm)
+                {
+                    SaveGamePatcher.BackupSavesToDownload();
+                }
+                FolderCmdTool.DeleteFolderCmd("BackupSaves");
                 MainActivity.instance.Finish();
             });
         }
-
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.ConfirmOnly("Check Update SMAPI", "choose folder SMAPI-3.20.4++ for check & update", async () =>
+            NotifyTool.Confirm("Check Update SMAPI", "choose folder SMAPI-3.20.4++ for check & update", async (isConfirm) =>
             {
-                AndroidLog.Log("Start folder picker");
-                var pick = await FolderPicker.Pick();
-                UpdateSMAPI(pick);
+                if (isConfirm)
+                {
+                    var pick = await FolderPicker.Pick();
+                    UpdateSMAPI(pick);
+                }
                 FolderCmdTool.DeleteFolderCmd("UpdateSMAPI");
+                MainActivity.instance.Finish();
             });
         }
         static void UpdateSMAPI(Uri uri)
@@ -156,7 +164,6 @@ namespace StardewModdingAPI.AndroidExtens
             }
             //bug touch screen game got crash
             //important please exit app
-            MainActivity.instance.Finish();
         }
         public static void AlertUpdateMods()
         {
