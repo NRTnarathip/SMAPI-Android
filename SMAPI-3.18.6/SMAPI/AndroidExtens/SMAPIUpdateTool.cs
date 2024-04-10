@@ -32,10 +32,12 @@ namespace StardewModdingAPI.AndroidExtens
             //select event only 1
             if (FolderCmdTool.CheckFolderCmd("UpdateSMAPI"))
             {
+                FolderCmdTool.DeleteFolderCmd("UpdateSMAPI");
                 AlertUpdateSMAPI();
             }
             else if (FolderCmdTool.CheckFolderCmd("BackupSaves"))
             {
+                FolderCmdTool.DeleteFolderCmd("BackupSaves");
                 AlertBackupSaves();
             }
 
@@ -43,10 +45,11 @@ namespace StardewModdingAPI.AndroidExtens
             //{
             //    AlertSyncSave();
             //}
-            //else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
-            //{
-            //    AlertUpdateMods();
-            //}
+            else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
+            {
+                FolderCmdTool.DeleteFolderCmd("UpdateMods");
+                AlertUpdateMods();
+            }
         }
 
         private static void AlertSyncSave()
@@ -84,10 +87,7 @@ namespace StardewModdingAPI.AndroidExtens
         private static void AlertBackupSaves()
         {
             if (!SaveGamePatcher.CanBackupSaves())
-            {
-                FolderCmdTool.DeleteFolderCmd("BackupSaves");
                 return;
-            }
 
             NotifyTool.Confirm("Backup Saves", "Are you sure to backup saves in folder Download", (isConfirm) =>
             {
@@ -95,7 +95,6 @@ namespace StardewModdingAPI.AndroidExtens
                 {
                     SaveGamePatcher.BackupSavesToDownload();
                 }
-                FolderCmdTool.DeleteFolderCmd("BackupSaves");
                 MainActivity.instance.Finish();
             });
         }
@@ -108,7 +107,6 @@ namespace StardewModdingAPI.AndroidExtens
                     var pick = await FolderPicker.Pick();
                     UpdateSMAPI(pick);
                 }
-                FolderCmdTool.DeleteFolderCmd("UpdateSMAPI");
                 MainActivity.instance.Finish();
             });
         }
@@ -167,12 +165,13 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertUpdateMods()
         {
-            NotifyTool.ConfirmOnly("Check & Update Mods", "choose folder SMAPI-Game for update mods", async () =>
+            NotifyTool.Confirm("Check & Update Mods", "select folder SMAPI-Game for update mods", async (isConfirm) =>
             {
-                var folder = await FolderPicker.Pick();
-                UpdateMods(folder);
-                //delete cmd
-                FolderCmdTool.DeleteFolderCmd("UpdateMods");
+                if (isConfirm)
+                {
+                    var folder = await FolderPicker.Pick();
+                    UpdateMods(folder);
+                }
                 MainActivity.instance.Finish();
             });
         }
@@ -207,7 +206,7 @@ namespace StardewModdingAPI.AndroidExtens
 
 
             //add and update
-            string externalModsPath = FolderPicker.ExternalMods;
+            string externalModsPath = FolderPicker.ExternalModsDir;
             foreach (var modDocFile in externalMods)
             {
                 //no need to check folder mod it's correct
