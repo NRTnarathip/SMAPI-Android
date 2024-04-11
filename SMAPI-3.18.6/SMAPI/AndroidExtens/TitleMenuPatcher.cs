@@ -38,7 +38,7 @@ namespace StardewModdingAPI.AndroidExtens
             if (!isHasCheckUpdate)
             {
                 isHasCheckUpdate = true;
-                SMAPIUpdateTool.CheckAllUpdate();
+                SMAPIUpdateTool.CheckAllCommand();
             }
 
             //check if it's on customize character, so we dont need render

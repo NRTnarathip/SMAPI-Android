@@ -13,6 +13,10 @@ namespace StardewModdingAPI.AndroidExtens
 {
     public static class SMAPIUpdateTool
     {
+        public const string CMD_UpdateSMAPI = "CMD_UpdateSMAPI";
+        public const string CMD_SyncMods = "CMD_SyncMods";
+        public const string CMD_BackupSaves = "CMD_BackupSaves";
+
         public struct ModManifest
         {
             public string Name;
@@ -26,32 +30,27 @@ namespace StardewModdingAPI.AndroidExtens
             }
         }
         //call this when on first enter TitleMenu
-        public static void CheckAllUpdate()
+        public static void CheckAllCommand()
         {
             //detect command with Folder Name
             //select event only 1
-            if (FolderCmdTool.CheckFolderCmd("UpdateSMAPI"))
+            if (FolderCmdTool.CheckFolderCmd(CMD_UpdateSMAPI))
             {
-                FolderCmdTool.DeleteFolderCmd("UpdateSMAPI");
                 AlertUpdateSMAPI();
             }
-            else if (FolderCmdTool.CheckFolderCmd("BackupSaves"))
+            else if (FolderCmdTool.CheckFolderCmd(CMD_BackupSaves))
             {
-                FolderCmdTool.DeleteFolderCmd("BackupSaves");
                 AlertBackupSaves();
             }
-
-            //else if (FolderCmdTool.CheckFolderCmd("SyncSave"))
-            //{
-            //    AlertSyncSave();
-            //}
-            else if (FolderCmdTool.CheckFolderCmd("UpdateMods"))
+            //check CMD_UpdateMods when game it's 3.20.7
+            else if (FolderCmdTool.CheckFolderCmd(CMD_SyncMods))
             {
-                FolderCmdTool.DeleteFolderCmd("UpdateMods");
-                AlertUpdateMods();
+                AlertSyncMods();
             }
-        }
 
+            //clean all cmd folder
+            FolderCmdTool.Clean();
+        }
         private static void AlertSyncSave()
         {
             NotifyTool.ConfirmOnly("Sync Saves", "please choose folder for load saves", () =>
@@ -59,7 +58,6 @@ namespace StardewModdingAPI.AndroidExtens
                 SyncSave();
             });
         }
-
         private static async void SyncSave()
         {
             var uri = await FolderPicker.Pick();
@@ -83,7 +81,6 @@ namespace StardewModdingAPI.AndroidExtens
                 }
             }
         }
-
         private static void AlertBackupSaves()
         {
             if (!SaveGamePatcher.CanBackupSaves())
@@ -163,19 +160,19 @@ namespace StardewModdingAPI.AndroidExtens
             //bug touch screen game got crash
             //important please exit app
         }
-        public static void AlertUpdateMods()
+        public static void AlertSyncMods()
         {
-            NotifyTool.Confirm("Check & Update Mods", "select folder SMAPI-Game for update mods", async (isConfirm) =>
+            NotifyTool.Confirm("Check & Sync Mods", "select folder SMAPI-Game for syncs mods", async (isConfirm) =>
             {
                 if (isConfirm)
                 {
                     var folder = await FolderPicker.Pick();
-                    UpdateMods(folder);
+                    SyncMods(folder);
                 }
                 MainActivity.instance.Finish();
             });
         }
-        static void UpdateMods(Uri uri)
+        static void SyncMods(Uri uri)
         {
             var smapiDocFile = uri.ToDocument();
             if (smapiDocFile.Name != "SMAPI-Game")
@@ -206,7 +203,6 @@ namespace StardewModdingAPI.AndroidExtens
 
 
             //add and update
-            string externalModsPath = FolderPicker.ExternalModsDir;
             foreach (var modDocFile in externalMods)
             {
                 //no need to check folder mod it's correct
@@ -216,34 +212,35 @@ namespace StardewModdingAPI.AndroidExtens
                 if (manifestDocFile == null)
                     continue;
 
-                var manifestContent = manifestDocFile.ReadFile();
-                var manifest = JsonConvert.DeserializeObject<ModManifest>(manifestContent);
 
                 var modPathInGameFiles = Constants.ModsPath.combine(modDocFile.Name);
                 //check if exists mod
                 if (Directory.Exists(modPathInGameFiles))
                 {
-                    //check mod version
+                    //check mod version in game data & external public mods dir
                     var manifestGameFilesPath = modPathInGameFiles.combine("manifest.json");
-                    if (!File.Exists(manifestGameFilesPath)) continue;
+                    if (!File.Exists(manifestGameFilesPath))
+                        continue;
 
+                    var manifestContent = manifestDocFile.ReadFile();
+                    var manifest = JsonConvert.DeserializeObject<ModManifest>(manifestContent);
                     var manifestGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
                     AndroidLog.Log("mod external version: " + manifest.Version);
                     AndroidLog.Log("mod in game version: " + manifestGameFiles.Version);
-                    //sync with any version
-                    if (manifest.Version == manifestGameFiles.Version)
-                        continue;
+                    //dont sync with current version
+                    if (manifest.Version != manifestGameFiles.Version)
+                    {
+                        var st = Stopwatch.StartNew();
+                        //sync new mod with any version
+                        if (Directory.Exists(modPathInGameFiles))
+                            Directory.Delete(modPathInGameFiles, true);
+                        modDocFile.CopyDirectory(modPathInGameFiles);
+                        st.Stop();
+                        AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
+                    }
                 }
-                var st = Stopwatch.StartNew();
-                //sync new mod with any version
-                if (Directory.Exists(modPathInGameFiles))
-                    Directory.Delete(modPathInGameFiles, true);
-                modDocFile.CopyDirectory(modPathInGameFiles);
-                st.Stop();
-                AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
             }
         }
-
         public static void Log(string msg) => SCore.Instance.GetMonitorForGame().Log(msg, LogLevel.Debug);
     }
 }
