@@ -1,9 +1,9 @@
-using System;
-using System.IO;
 using StardewModdingAPI.Framework.ModHelpers;
 using StardewModdingAPI.Toolkit.Serialization;
 using StardewModdingAPI.Toolkit.Utilities;
 using StardewModdingAPI.Toolkit.Utilities.PathLookups;
+using System;
+using System.IO;
 
 namespace StardewModdingAPI.Framework
 {

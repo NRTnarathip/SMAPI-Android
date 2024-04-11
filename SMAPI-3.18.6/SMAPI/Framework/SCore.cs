@@ -2129,8 +2129,7 @@ namespace StardewModdingAPI.Framework
         private bool TryLoadModEntry(IModMetadata metadata, Assembly modAssembly, out Mod? mod, out string? error)
         {
             mod = null;
-            Monitor.Log("inner try to load mod entry");
-
+            //Monitor.Log("inner try to load mod entry");
             try
             {
                 modAssembly.DefinedTypes.Where(type => typeof(Mod).IsAssignableFrom(type) && !type.IsAbstract).Take(2).ToArray();
@@ -2144,7 +2143,7 @@ namespace StardewModdingAPI.Framework
             TypeInfo[] modEntries = modAssembly.DefinedTypes.Where(type =>
                     typeof(Mod).IsAssignableFrom(type) && !type.IsAbstract).Take(2).ToArray();
 
-            Monitor.Log("mod entry len: " + modEntries.Length);
+            //Monitor.Log("mod entry len: " + modEntries.Length);
             if (modEntries.Length == 0)
             {
                 error = $"its DLL has no '{nameof(Mod)}' subclass.";

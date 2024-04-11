@@ -135,14 +135,26 @@ namespace StardewModdingAPI.Metadata
                 yield return new ReplaceReferencesRewriter()
                     // Stardew Valley 1.5 (fields moved)
                     .MapField("Netcode.NetCollection`1<StardewValley.Objects.Furniture> StardewValley.Locations.DecoratableLocation::furniture", typeof(GameLocation), nameof(GameLocation.furniture))
-                    .MapField("Netcode.NetCollection`1<StardewValley.TerrainFeatures.ResourceClump> StardewValley.Farm::resourceClumps", typeof(GameLocation), nameof(GameLocation.resourceClumps))
+                    .MapField("Netcode.NetCollection`1<StardewValley.TerrainFeatures.ResourceClump> StardewValley.Farm::resourceClumps",
+                        typeof(GameLocation),
+                        nameof(GameLocation.resourceClumps))
                     .MapField("Netcode.NetCollection`1<StardewValley.TerrainFeatures.ResourceClump> StardewValley.Locations.MineShaft::resourceClumps", typeof(GameLocation), nameof(GameLocation.resourceClumps))
 
                     // Stardew Valley 1.5.5 (XNA => MonoGame method changes)
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
 
+                    // Stardew Valley Expanded Android & PC
+                    //may erryr please make all reference & implement with class
+                    .MapFacade<StardewValley.ISoundBank, AndroidExtens.GameRewriter.ISoundBankRewriter>()
+                    .MapFacade<StardewValley.SoundBankWrapper, AndroidExtens.GameRewriter.SoundBankWrapper>()
+                    .MapFacade<StardewValley.DummySoundBank, AndroidExtens.GameRewriter.DummySoundBank>()
+
+                    //All ICue rewriter
+                    .MapFacade<StardewValley.ICue, AndroidExtens.GameRewriter.ICueRewriter>()
+                    .MapFacade<StardewValley.DummyCue, AndroidExtens.GameRewriter.DummyCue>()
+                    .MapFacade<StardewValley.CueWrapper, AndroidExtens.GameRewriter.CueWrapper>()
+
                     // Stardew Valley PC To Android
-                    //.MapFacade<OptionsPage, OptionsPageRewrite>()
                     .MapFacade<Game1, Game1Rewrite>();
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5

@@ -86,12 +86,16 @@ namespace StardewModdingAPI.Framework
 #if SMAPI_DEPRECATED
         /// <summary>A cache of asset operation groups created for legacy <see cref="IAssetLoader"/> implementations.</summary>
         [Obsolete("This only exists to support legacy code and will be removed in SMAPI 4.0.0.")]
-        private readonly Dictionary<IAssetLoader, Dictionary<Type, AssetLoadOperation>> LegacyLoaderCache = new(ReferenceEqualityComparer.Instance);
+        private readonly Dictionary<IAssetLoader, Dictionary<Type, AssetLoadOperation>> LegacyLoaderCache = new();
 
         /// <summary>A cache of asset operation groups created for legacy <see cref="IAssetEditor"/> implementations.</summary>
         [Obsolete("This only exists to support legacy code and will be removed in SMAPI 4.0.0.")]
-        private readonly Dictionary<IAssetEditor, Dictionary<Type, AssetEditOperation>> LegacyEditorCache = new(ReferenceEqualityComparer.Instance);
+        //private readonly Dictionary<IAssetEditor, Dictionary<Type, AssetEditOperation>> LegacyEditorCache = new(ReferenceEqualityComparer<IAssetEditor>.Instance);
+        private readonly Dictionary<IAssetEditor, Dictionary<Type, AssetEditOperation>> LegacyEditorCache = new();
+
+
 #endif
+
 
 
         /*********

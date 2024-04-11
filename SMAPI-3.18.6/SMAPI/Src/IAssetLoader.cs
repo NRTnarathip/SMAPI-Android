@@ -1,6 +1,7 @@
 #if SMAPI_DEPRECATED
-using System;
+
 using StardewModdingAPI.Events;
+using System;
 
 namespace StardewModdingAPI
 {

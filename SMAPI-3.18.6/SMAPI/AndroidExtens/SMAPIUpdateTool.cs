@@ -35,22 +35,19 @@ namespace StardewModdingAPI.AndroidExtens
         {
             //detect command with Folder Name
             //select event only 1
-            if (FolderCmdTool.CheckFolderCmd(CMD_UpdateSMAPI))
+            var cmd = FolderCmdTool.GetCMDAndClean();
+            switch (cmd)
             {
-                AlertUpdateSMAPI();
+                case CMD_UpdateSMAPI:
+                    AlertUpdateSMAPI();
+                    break;
+                case CMD_BackupSaves:
+                    AlertBackupSaves();
+                    break;
+                case CMD_SyncMods:
+                    AlertSyncMods();
+                    break;
             }
-            else if (FolderCmdTool.CheckFolderCmd(CMD_BackupSaves))
-            {
-                AlertBackupSaves();
-            }
-            //check CMD_UpdateMods when game it's 3.20.7
-            else if (FolderCmdTool.CheckFolderCmd(CMD_SyncMods))
-            {
-                AlertSyncMods();
-            }
-
-            //clean all cmd folder
-            FolderCmdTool.Clean();
         }
         private static void AlertSyncSave()
         {
@@ -98,7 +95,7 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.Confirm("Check Update SMAPI", $"Select Folder SMAPI-{Constants.ApiVersion}++", async (isConfirm) =>
+            NotifyTool.Confirm("Check Update SMAPI", $"Select Folder /Download/SMAPI-{Constants.ApiVersion}++ after extract zip file", async (isConfirm) =>
             {
                 if (isConfirm)
                 {
@@ -163,7 +160,7 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertSyncMods()
         {
-            NotifyTool.Confirm("Check & Sync Mods", "Select Folder StardewValley/SMAPI-Game", async (isConfirm) =>
+            NotifyTool.Confirm("Check & Sync Mods", "Select Folder /StardewValley/SMAPI-Game", async (isConfirm) =>
             {
                 if (isConfirm)
                 {

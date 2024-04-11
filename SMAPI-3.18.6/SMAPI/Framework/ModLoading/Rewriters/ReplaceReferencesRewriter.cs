@@ -180,6 +180,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             }
 
             // add mapping
+            Console.WriteLine("done add method: " + fromFullName + ", method: " + method.GetType().FullName);
             return this.MapMember(fromFullName, method, "method");
         }
 

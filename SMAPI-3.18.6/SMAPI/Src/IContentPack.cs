@@ -49,6 +49,7 @@ namespace StardewModdingAPI
         void WriteJsonFile<TModel>(string path, TModel data)
             where TModel : class;
 
+
 #if SMAPI_DEPRECATED
         /// <summary>Load content from the content pack folder (if not already cached), and return it. When loading a <c>.png</c> file, this must be called outside the game's draw loop.</summary>
         /// <typeparam name="T">The expected data type. The main supported types are <see cref="Map"/>, <see cref="Texture2D"/>, <see cref="IRawTextureData"/>, and data structures; other types may be supported by the game's content pipeline.</typeparam>

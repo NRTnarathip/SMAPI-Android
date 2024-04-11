@@ -7,10 +7,6 @@ namespace StardewModdingAPI.AndroidExtens
     public static class FolderCmdTool
     {
         public static string GetFolderCmdPath(string cmd) => Path.Combine(FolderPicker.ExternalSMAPIDir, cmd);
-        public static bool CheckFolderCmd(string cmd)
-        {
-            return Directory.Exists(GetFolderCmdPath(cmd));
-        }
         public static bool CheckFolderCmds(string[] cmds)
         {
             foreach (var cmd in cmds)
@@ -41,17 +37,27 @@ namespace StardewModdingAPI.AndroidExtens
             }
         }
 
-        public static void Clean()
+        public static string GetCMDAndClean()
         {
-            foreach (var dir in Directory.GetDirectories(FolderPicker.ExternalSMAPIDir))
+            var folderCmdName = "";
+            try
             {
-                var folderName = dir.GetFolderName();
-                Console.WriteLine("found dir: " + folderName);
-                if (folderName.StartsWith(SMAPIUpdateTool.CMDPrefix))
+                foreach (var dir in Directory.GetDirectories(FolderPicker.ExternalSMAPIDir))
                 {
-                    DeleteFolderCmd(folderName);
+                    var folderName = dir.GetFolderName();
+                    Console.WriteLine("found dir: " + folderName);
+                    if (folderName.StartsWith(SMAPIUpdateTool.CMDPrefix))
+                    {
+                        folderCmdName = folderName;
+                        DeleteFolderCmd(folderName);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error try Get CMD & Clean: " + ex.Message);
+            }
+            return folderCmdName;
         }
     }
 }
