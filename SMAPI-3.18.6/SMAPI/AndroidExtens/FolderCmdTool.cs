@@ -47,7 +47,7 @@ namespace StardewModdingAPI.AndroidExtens
             {
                 var folderName = dir.GetFolderName();
                 Console.WriteLine("found dir: " + folderName);
-                if (folderName.StartsWith("CMD_"))
+                if (folderName.StartsWith(SMAPIUpdateTool.CMDPrefix))
                 {
                     DeleteFolderCmd(folderName);
                 }

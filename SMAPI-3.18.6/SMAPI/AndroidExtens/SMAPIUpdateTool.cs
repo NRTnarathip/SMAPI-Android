@@ -13,9 +13,10 @@ namespace StardewModdingAPI.AndroidExtens
 {
     public static class SMAPIUpdateTool
     {
-        public const string CMD_UpdateSMAPI = "CMD_UpdateSMAPI";
-        public const string CMD_SyncMods = "CMD_SyncMods";
-        public const string CMD_BackupSaves = "CMD_BackupSaves";
+        public const string CMDPrefix = "CMD_";
+        public const string CMD_UpdateSMAPI = CMDPrefix + "UpdateSMAPI";
+        public const string CMD_SyncMods = CMDPrefix + "SyncMods";
+        public const string CMD_BackupSaves = CMDPrefix + "BackupSaves";
 
         public struct ModManifest
         {
@@ -97,7 +98,7 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.Confirm("Check Update SMAPI", "choose folder SMAPI-3.20.4++ for check & update", async (isConfirm) =>
+            NotifyTool.Confirm("Check Update SMAPI", $"choose folder SMAPI-{Constants.ApiVersion}++ for check & update", async (isConfirm) =>
             {
                 if (isConfirm)
                 {
@@ -214,30 +215,37 @@ namespace StardewModdingAPI.AndroidExtens
 
 
                 var modPathInGameFiles = Constants.ModsPath.combine(modDocFile.Name);
+                bool needToSyncMods = true;
                 //check if exists mod
                 if (Directory.Exists(modPathInGameFiles))
                 {
                     //check mod version in game data & external public mods dir
                     var manifestGameFilesPath = modPathInGameFiles.combine("manifest.json");
-                    if (!File.Exists(manifestGameFilesPath))
-                        continue;
-
-                    var manifestContent = manifestDocFile.ReadFile();
-                    var manifest = JsonConvert.DeserializeObject<ModManifest>(manifestContent);
-                    var manifestGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
-                    AndroidLog.Log("mod external version: " + manifest.Version);
-                    AndroidLog.Log("mod in game version: " + manifestGameFiles.Version);
-                    //dont sync with current version
-                    if (manifest.Version != manifestGameFiles.Version)
+                    if (File.Exists(manifestGameFilesPath))
                     {
-                        var st = Stopwatch.StartNew();
-                        //sync new mod with any version
-                        if (Directory.Exists(modPathInGameFiles))
-                            Directory.Delete(modPathInGameFiles, true);
-                        modDocFile.CopyDirectory(modPathInGameFiles);
-                        st.Stop();
-                        AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
+                        var manifestContent = manifestDocFile.ReadFile();
+                        var manifest = JsonConvert.DeserializeObject<ModManifest>(manifestContent);
+                        var manifestGameFiles = JsonConvert.DeserializeObject<ModManifest>(File.ReadAllText(manifestGameFilesPath));
+                        AndroidLog.Log("mod external version: " + manifest.Version);
+                        AndroidLog.Log("mod in game version: " + manifestGameFiles.Version);
+                        //dont sync with current version
+                        if (manifest.Version == manifestGameFiles.Version)
+                        {
+                            needToSyncMods = false;
+                        }
                     }
+                }
+
+                if (needToSyncMods)
+                {
+                    var st = Stopwatch.StartNew();
+                    //sync new mod with any version
+                    //delete mod clean up first
+                    if (Directory.Exists(modPathInGameFiles))
+                        Directory.Delete(modPathInGameFiles, true);
+                    modDocFile.CopyDirectory(modPathInGameFiles);
+                    st.Stop();
+                    AndroidLog.Log("done copy mod to: " + modDocFile.Name + ", total time " + st.Elapsed.TotalMilliseconds + "ms");
                 }
             }
         }
