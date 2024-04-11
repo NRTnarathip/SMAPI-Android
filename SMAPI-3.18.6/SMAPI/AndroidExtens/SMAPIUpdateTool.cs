@@ -98,7 +98,7 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertUpdateSMAPI()
         {
-            NotifyTool.Confirm("Check Update SMAPI", $"choose folder SMAPI-{Constants.ApiVersion}++ for check & update", async (isConfirm) =>
+            NotifyTool.Confirm("Check Update SMAPI", $"Select Folder SMAPI-{Constants.ApiVersion}++", async (isConfirm) =>
             {
                 if (isConfirm)
                 {
@@ -163,7 +163,7 @@ namespace StardewModdingAPI.AndroidExtens
         }
         public static void AlertSyncMods()
         {
-            NotifyTool.Confirm("Check & Sync Mods", "select folder SMAPI-Game for syncs mods", async (isConfirm) =>
+            NotifyTool.Confirm("Check & Sync Mods", "Select Folder StardewValley/SMAPI-Game", async (isConfirm) =>
             {
                 if (isConfirm)
                 {
