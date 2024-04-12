@@ -77,6 +77,14 @@ namespace StardewModdingAPI.Framework.ModLoading
                 ModuleDefinition module = this.AssemblyMap.TargetModules[assembly];
                 foreach (TypeDefinition type in module.GetTypes())
                 {
+                    //if (type.Name.Contains("SoundBank"))
+                    //{
+                    //    Console.WriteLine($"found type definition: " + type.FullName);
+                    //    foreach (var method in type.GetMethods())
+                    //    {
+                    //        Console.WriteLine($"found method: {method.FullName}");
+                    //    }
+                    //}
                     if (!type.IsPublic)
                         continue; // no need to rewrite
                     if (type.Namespace.Contains("<"))
@@ -87,7 +95,7 @@ namespace StardewModdingAPI.Framework.ModLoading
 
             // init rewriters
             this.InstructionHandlers = new InstructionMetadata().GetHandlers(this.ParanoidMode, this.RewriteMods).ToArray();
-
+            monitor.Log("SV: Done AssemblyLoader .ctor");
         }
 
         /// <summary>Preprocess and load an assembly.</summary>
@@ -131,6 +139,7 @@ namespace StardewModdingAPI.Framework.ModLoading
                     continue;
 
                 // rewrite assembly
+                //Console.WriteLine("SV: starting rewriter asm: " + assembly.Definition.Name);
                 bool changed = this.RewriteAssembly(mod, assembly.Definition, loggedMessages, logPrefix: "      ");
                 var loadedAssemblies = new HashSet<string>(AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name));
 
@@ -365,6 +374,8 @@ namespace StardewModdingAPI.Framework.ModLoading
             string filename = $"{assembly.Name.Name}.dll";
 
             // swap assembly references if needed (e.g. XNA => MonoGame)
+
+
             bool platformChanged = false;
             if (this.RewriteMods)
             {
@@ -424,7 +435,9 @@ namespace StardewModdingAPI.Framework.ModLoading
                 {
                     bool rewritten = false;
                     foreach (IInstructionHandler handler in handlers)
+                    {
                         rewritten |= handler.Handle(module, type, replaceWith);
+                    }
                     return rewritten;
                 },
                 rewriteInstruction: (ref Instruction instruction, ILProcessor cil) =>
@@ -444,6 +457,9 @@ namespace StardewModdingAPI.Framework.ModLoading
                     this.ProcessInstructionHandleResult(mod, handler, flag, loggedMessages, logPrefix, filename);
             }
 
+
+            //fix fix
+            //replace reference My Class & interface
             return platformChanged || anyRewritten;
         }
 

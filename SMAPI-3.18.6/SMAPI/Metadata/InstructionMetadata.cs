@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.AndroidExtens.GameRewriter;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Framework.ModLoading;
 using StardewModdingAPI.Framework.ModLoading.Finders;
@@ -22,7 +23,13 @@ namespace StardewModdingAPI.Metadata
         *********/
         /// <summary>The assembly names to which to heuristically detect broken references.</summary>
         /// <remarks>The current implementation only works correctly with assemblies that should always be present.</remarks>
-        private readonly ISet<string> ValidateReferencesToAssemblies = new HashSet<string> { "StardewModdingAPI", "Stardew Valley", "StardewValley", "Netcode" };
+        private readonly ISet<string> ValidateReferencesToAssemblies = new HashSet<string> {
+            "StardewModdingAPI",
+            "Stardew Valley",
+            "StardewValley",
+            "SAAT.API",
+            "Netcode"
+        };
 
 
         /*********
@@ -43,8 +50,7 @@ namespace StardewModdingAPI.Metadata
                 yield return new HeuristicFieldRewriter(this.ValidateReferencesToAssemblies);
                 yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
-                //reReference module
-                //StringSplitOptions.
+                //reReference module from zaneyork src code
                 yield return new ModuleReferenceRewriter("System.*", new Dictionary<string, Version>
                 {
                 {
@@ -126,6 +132,7 @@ namespace StardewModdingAPI.Metadata
                         typeof(HashSet<>).Assembly,
                         typeof(XmlDocument).Assembly,
                         typeof(XComment).Assembly,
+                        typeof(Single).Assembly,
                         typeof(IReadOnlySet<>).Assembly,
                         typeof(ReadOnlySpan<>).Assembly,
                         typeof(System.Data.DataTable).Assembly,
@@ -144,18 +151,19 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
 
                     // Stardew Valley Expanded Android & PC
-                    //may erryr please make all reference & implement with class
-                    .MapFacade<StardewValley.ISoundBank, AndroidExtens.GameRewriter.ISoundBankRewriter>()
-                    .MapFacade<StardewValley.SoundBankWrapper, AndroidExtens.GameRewriter.SoundBankWrapper>()
-                    .MapFacade<StardewValley.DummySoundBank, AndroidExtens.GameRewriter.DummySoundBank>()
+                    //.MapFacade<StardewValley.ISoundBank, AndroidExtens.GameRewriter.ISoundBankRewriter>()
+                    //.MapFacade<StardewValley.SoundBankWrapper, AndroidExtens.GameRewriter.SoundBankWrapperRewriter>()
+                    //.MapFacade<StardewValley.DummySoundBank, AndroidExtens.GameRewriter.DummySoundBankRewriter>()
 
                     //All ICue rewriter
-                    .MapFacade<StardewValley.ICue, AndroidExtens.GameRewriter.ICueRewriter>()
-                    .MapFacade<StardewValley.DummyCue, AndroidExtens.GameRewriter.DummyCue>()
-                    .MapFacade<StardewValley.CueWrapper, AndroidExtens.GameRewriter.CueWrapper>()
+                    //.MapFacade<StardewValley.ICue, AndroidExtens.GameRewriter.ICueRewriter>()
+                    //.MapFacade<StardewValley.DummyCue, AndroidExtens.GameRewriter.DummyCueRewriter>()
+                    //.MapFacade<StardewValley.CueWrapper, AndroidExtens.GameRewriter.CueWrapperRewriter>()
 
                     // Stardew Valley PC To Android
                     .MapFacade<Game1, Game1Rewrite>();
+
+                yield return new SoundBankRewriter("error can't patch sound bank");
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();

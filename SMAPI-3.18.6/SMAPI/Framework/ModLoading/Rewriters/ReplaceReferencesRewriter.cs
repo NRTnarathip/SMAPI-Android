@@ -180,7 +180,6 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             }
 
             // add mapping
-            Console.WriteLine("done add method: " + fromFullName + ", method: " + method.GetType().FullName);
             return this.MapMember(fromFullName, method, "method");
         }
 
@@ -226,6 +225,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
 
                 // map method
                 {
+
                     string fromFullName = $"{this.FormatCecilType(method.ReturnType)} {fromTypeName}::{method.Name}({this.FormatCecilParameterList(method.GetParameters())})";
                     this.MapMember(fromFullName, method, "method");
                 }

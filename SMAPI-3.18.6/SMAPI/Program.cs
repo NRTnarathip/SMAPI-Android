@@ -38,6 +38,7 @@ namespace StardewModdingAPI
             SaveGamePatcher.Init();
             OptionsPagePatcher.Init();
             FolderPicker.Init();
+
         }
 
         /*********

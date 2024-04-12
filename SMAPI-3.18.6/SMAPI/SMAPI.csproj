@@ -40,7 +40,7 @@
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;SMAPI_DEPRECATED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -170,13 +170,15 @@
     <Compile Include="AndroidExtens\AndroidExtensions.cs" />
     <Compile Include="AndroidExtens\BuildDate.cs" />
     <Compile Include="AndroidExtens\ConsoleHook.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\DummySoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\ICueAllRewriter.cs" />
-    <Compile Include="AndroidExtens\GameRewriter\ISoundBankAllRewriter.cs" />
     <Compile Include="AndroidExtens\FileTool.cs" />
     <Compile Include="AndroidExtens\FolderCmdTool.cs" />
     <Compile Include="AndroidExtens\FolderPicker.cs" />
     <Compile Include="AndroidExtens\Game1Rewrite.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />
