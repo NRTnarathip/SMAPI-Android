@@ -25,8 +25,6 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
                 foreach (KeyValuePair<string, AssemblyNameReference> item in dictionary)
                 {
                     TargetMap.TryAdd(item.Key, item.Value);
-                    if (item.Key.Contains("ToArray"))
-                        Android.Util.Log.Debug("NRT Debug", $"Map item: {item.Key} :: {item.Value.FullName}");
                 }
             }
         }
@@ -79,9 +77,8 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
         public bool Handle(ModuleDefinition module)
         {
             if (!module.AssemblyReferences.Any(IsMatch))
-            {
                 return false;
-            }
+
             IEnumerable<TypeReference> enumerable = from p in module.GetTypeReferences().Where(IsMatch)
                                                     orderby p.FullName
                                                     select p;

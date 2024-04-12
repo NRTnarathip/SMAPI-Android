@@ -35,20 +35,18 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
         {
             if (iSoundBank is SoundBankWrapper obj)
             {
-                return ((SoundBank)(typeof(SoundBankWrapper).GetField("soundBank", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(obj)))?.GetCueDefinition(name);
+                return ((SoundBank)(typeof(SoundBankWrapper).GetField("soundBank",
+                    BindingFlags.Instance |
+                    BindingFlags.Public |
+                    BindingFlags.NonPublic)?.GetValue(obj)))?.GetCueDefinition(name);
             }
-            MethodInfo methodInfo = AccessTools.Method(iSoundBank.GetType(), "GetCueDefinition", new Type[1] { typeof(string) });
-            object obj2;
-            if ((object)methodInfo == null)
-            {
-                obj2 = null;
-            }
-            else
-            {
-                object[] parameters = new string[1] { name };
-                obj2 = methodInfo.Invoke(iSoundBank, parameters);
-            }
-            return (CueDefinition)obj2;
+            MethodInfo getCueDefMethod = AccessTools.Method(iSoundBank.GetType(), "GetCueDefinition", new Type[1] { typeof(string) });
+            if (getCueDefMethod == null)
+                return null;
+
+            var parameters = new string[1] { name };
+            var result = getCueDefMethod.Invoke(iSoundBank, parameters);
+            return result as CueDefinition;
         }
 
     }

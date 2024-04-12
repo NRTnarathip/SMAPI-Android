@@ -9,7 +9,6 @@ using StardewValley;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -46,11 +45,8 @@ namespace StardewModdingAPI.Metadata
             // rewrite for crossplatform compatibility
             if (rewriteMods)
             {
-                // heuristic rewrites
-                yield return new HeuristicFieldRewriter(this.ValidateReferencesToAssemblies);
-                yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
-                //reReference module from zaneyork src code
+                //reReference module  src: from zaneyork
                 yield return new ModuleReferenceRewriter("System.*", new Dictionary<string, Version>
                 {
                 {
@@ -125,18 +121,22 @@ namespace StardewModdingAPI.Metadata
                     "System.",
                     new Version(5, 0)
                 }
-                }, new Assembly[]
-                {
-                        typeof(CollectionBase).Assembly,
-                        typeof(ISet<>).Assembly,
-                        typeof(HashSet<>).Assembly,
-                        typeof(XmlDocument).Assembly,
-                        typeof(XComment).Assembly,
-                        typeof(Single).Assembly,
-                        typeof(IReadOnlySet<>).Assembly,
-                        typeof(ReadOnlySpan<>).Assembly,
-                        typeof(System.Data.DataTable).Assembly,
-                });
+                },
+                [
+                    typeof(CollectionBase).Assembly,
+                    typeof(ISet<>).Assembly,
+                    typeof(HashSet<>).Assembly,
+                    typeof(XmlDocument).Assembly,
+                    typeof(XComment).Assembly,
+                    typeof(Single).Assembly,
+                    typeof(IReadOnlySet<>).Assembly,
+                    typeof(ReadOnlySpan<>).Assembly,
+                    typeof(System.Data.DataTable).Assembly,
+                ]);
+
+                // heuristic rewrites
+                yield return new HeuristicFieldRewriter(this.ValidateReferencesToAssemblies);
+                yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
                 // specific versions
                 yield return new ReplaceReferencesRewriter()
@@ -149,16 +149,6 @@ namespace StardewModdingAPI.Metadata
 
                     // Stardew Valley 1.5.5 (XNA => MonoGame method changes)
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
-
-                    // Stardew Valley Expanded Android & PC
-                    //.MapFacade<StardewValley.ISoundBank, AndroidExtens.GameRewriter.ISoundBankRewriter>()
-                    //.MapFacade<StardewValley.SoundBankWrapper, AndroidExtens.GameRewriter.SoundBankWrapperRewriter>()
-                    //.MapFacade<StardewValley.DummySoundBank, AndroidExtens.GameRewriter.DummySoundBankRewriter>()
-
-                    //All ICue rewriter
-                    //.MapFacade<StardewValley.ICue, AndroidExtens.GameRewriter.ICueRewriter>()
-                    //.MapFacade<StardewValley.DummyCue, AndroidExtens.GameRewriter.DummyCueRewriter>()
-                    //.MapFacade<StardewValley.CueWrapper, AndroidExtens.GameRewriter.CueWrapperRewriter>()
 
                     // Stardew Valley PC To Android
                     .MapFacade<Game1, Game1Rewrite>();
