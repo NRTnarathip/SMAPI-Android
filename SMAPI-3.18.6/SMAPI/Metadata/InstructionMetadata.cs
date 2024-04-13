@@ -6,6 +6,7 @@ using StardewModdingAPI.Framework.ModLoading.Finders;
 using StardewModdingAPI.Framework.ModLoading.Rewriters;
 using StardewModdingAPI.Framework.ModLoading.Rewriters.StardewValley_1_5;
 using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,6 +46,9 @@ namespace StardewModdingAPI.Metadata
             // rewrite for crossplatform compatibility
             if (rewriteMods)
             {
+                // heuristic rewrites
+                yield return new HeuristicFieldRewriter(this.ValidateReferencesToAssemblies);
+                yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
                 //reReference module  src: from zaneyork
                 yield return new ModuleReferenceRewriter("System.*", new Dictionary<string, Version>
@@ -134,9 +138,6 @@ namespace StardewModdingAPI.Metadata
                     typeof(System.Data.DataTable).Assembly,
                 ]);
 
-                // heuristic rewrites
-                yield return new HeuristicFieldRewriter(this.ValidateReferencesToAssemblies);
-                yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
                 // specific versions
                 yield return new ReplaceReferencesRewriter()
@@ -153,7 +154,16 @@ namespace StardewModdingAPI.Metadata
                     // Stardew Valley PC To Android
                     .MapFacade<Game1, Game1Rewrite>();
 
-                yield return new SoundBankRewriter("error can't patch sound bank");
+                yield return new SoundBankRewriter("patch soundBank");
+                yield return new MapMethodToStaticMethodRewriter()
+                    //.Add()
+
+                    .Add(typeof(OptionsElement), (method) => method.Name == "draw",
+                        typeof(OptionsElementRewriter), (method) => method.Name == "draw",
+                        (map) =>
+                        {
+                            map.AddPramToSrc(typeof(IClickableMenu));
+                        });
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();

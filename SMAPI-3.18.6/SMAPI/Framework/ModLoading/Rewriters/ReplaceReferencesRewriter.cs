@@ -201,7 +201,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             // properties
             foreach (PropertyInfo property in toType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
-                string propertyType = this.FormatCecilType(property.PropertyType);
+                string propertyType = FormatCecilType(property.PropertyType);
 
                 // add getter
                 MethodInfo? get = property.GetMethod;
@@ -226,14 +226,14 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
                 // map method
                 {
 
-                    string fromFullName = $"{this.FormatCecilType(method.ReturnType)} {fromTypeName}::{method.Name}({this.FormatCecilParameterList(method.GetParameters())})";
+                    string fromFullName = $"{FormatCecilType(method.ReturnType)} {fromTypeName}::{method.Name}({FormatCecilParameterList(method.GetParameters())})";
                     this.MapMember(fromFullName, method, "method");
                 }
 
                 // map constructor to static methods
                 if (method.IsStatic && method.Name == "Constructor")
                 {
-                    string fromFullName = $"System.Void {fromTypeName}::.ctor({this.FormatCecilParameterList(method.GetParameters())})";
+                    string fromFullName = $"System.Void {fromTypeName}::.ctor({FormatCecilParameterList(method.GetParameters())})";
                     this.MapMember(fromFullName, method, "method");
                 }
             }
@@ -243,7 +243,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             foreach (ConstructorInfo constructor in constructors)
             {
                 ParameterInfo[] parameters = constructor.GetParameters();
-                string fromFullName = $"System.Void {fromTypeName}::.ctor({this.FormatCecilParameterList(parameters)})";
+                string fromFullName = $"System.Void {fromTypeName}::.ctor({FormatCecilParameterList(parameters)})";
 
                 if (!mapDefaultConstructor && parameters.Length == 0)
                     continue;
@@ -355,14 +355,14 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
 
         /// <summary>Get a formatted type name in the Cecil full-method-name format.</summary>
         /// <param name="type">The type to format.</param>
-        private string FormatCecilType(Type type)
+        public static string FormatCecilType(Type type)
         {
             return RewriteHelper.GetFullCecilName(type);
         }
 
         /// <summary>Get a formatted parameter list in the Cecil full-method-name format.</summary>
         /// <param name="parameters">The parameter list to format.</param>
-        private string FormatCecilParameterList(ParameterInfo[] parameters)
+        public static string FormatCecilParameterList(ParameterInfo[] parameters)
         {
             var paramTypes = parameters.Select(p => RewriteHelper.GetFullCecilName(p.ParameterType));
             return string.Join(",", paramTypes);

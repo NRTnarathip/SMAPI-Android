@@ -153,7 +153,9 @@
     <Compile Include="AndroidExtens\FolderPicker.cs" />
     <Compile Include="AndroidExtens\Game1Rewrite.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\MapMethodToStaticMethodRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\OptionsElementRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
