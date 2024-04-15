@@ -29,7 +29,6 @@ namespace StardewModdingAPI
         public static void RunMain()
         {
             AndroidLog.Log("Start RunMain()");
-            new Harmony("SMAPI.Program").PatchAll();
             AppDomain.CurrentDomain.AssemblyResolve += Program.CurrentDomain_AssemblyResolve;
 
             //Init my android Extens
@@ -39,6 +38,7 @@ namespace StardewModdingAPI
             OptionsPagePatcher.Init();
             FolderPicker.Init();
 
+            new Harmony(typeof(Program).FullName).PatchAll();
         }
 
         /*********

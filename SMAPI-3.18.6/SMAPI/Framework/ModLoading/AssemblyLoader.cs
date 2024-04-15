@@ -95,7 +95,6 @@ namespace StardewModdingAPI.Framework.ModLoading
 
             // init rewriters
             this.InstructionHandlers = new InstructionMetadata().GetHandlers(this.ParanoidMode, this.RewriteMods).ToArray();
-            monitor.Log("SV: Done AssemblyLoader .ctor");
         }
 
         /// <summary>Preprocess and load an assembly.</summary>

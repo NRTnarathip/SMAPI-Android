@@ -70,7 +70,6 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
             if (currentMethod == null)
                 return false;
 
-            //Console.WriteLine($"SV: on handle: " + module.Name + $", ins to method {currentMethod.FullName}");
             if (currentMethod.FullName.Contains("AddCue"))
             {
                 var AddCueStaticMethod = module.ImportReference(typeof(SoundBankWrapperStaticMethod).GetMethod("AddCue"));

@@ -36,14 +36,14 @@ namespace StardewModdingAPI.AndroidExtensions
         [HarmonyPatch("WriteLine", new Type[] { typeof(string) })]
         static void WriteLine(string value)
         {
-            AndroidLog.Log("CS.WriteLine>> " + value);
+            Android.Util.Log.Debug("CS:", value);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("WriteLine", new Type[] { typeof(string), typeof(object) })]
         static void WriteLine(string format, object arg0)
         {
-            AndroidLog.Log("CS.WriteLine>> " + string.Format(format, arg0));
+            Android.Util.Log.Debug("CS:", string.Format(format, arg0));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Mono.Cecil;
-using Mono.Cecil.Cil;
+using StardewModdingAPI.Framework.ModLoading.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,34 +7,26 @@ using System.Reflection;
 
 namespace StardewModdingAPI.Framework.ModLoading.Rewriters
 {
-    internal class ModuleReferenceRewriter : IInstructionHandler
+    internal class ModuleReferenceRewriter : BaseInstructionHandler
     {
         private readonly Dictionary<string, Version> AssemblyRules;
 
         private readonly Dictionary<string, AssemblyNameReference> TargetMap = new Dictionary<string, AssemblyNameReference>();
 
-        public ModuleReferenceRewriter(string phrase, Dictionary<string, Version>
-            assemblyRules, Assembly[] assemblies)
+        public ModuleReferenceRewriter(Dictionary<string, Version> assemblyRules,
+            Assembly[] assemblies) : base("System.* assembly ref")
         {
-            DefaultPhrase = phrase + " assembly ref";
             AssemblyRules = assemblyRules;
-            foreach (Assembly assembly in assemblies)
+            foreach (var assembly in assemblies)
             {
-                AssemblyNameReference target = AssemblyNameReference.Parse(assembly.FullName);
-                Dictionary<string, AssemblyNameReference> dictionary = assembly.GetTypes().ToDictionary((Type p) => p.FullName, (Type p) => target);
+                var asmNameReference = AssemblyNameReference.Parse(assembly.FullName);
+                var dictionary = assembly.GetTypes().ToDictionary((Type type) => type.FullName, (Type p) => asmNameReference);
                 foreach (KeyValuePair<string, AssemblyNameReference> item in dictionary)
                 {
                     TargetMap.TryAdd(item.Key, item.Value);
                 }
             }
         }
-
-        public string DefaultPhrase { get; }
-
-        public ISet<InstructionHandleResult> Flags { get; } = new HashSet<InstructionHandleResult>();
-
-
-        public ISet<string> Phrases { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         private bool IsMatch(AssemblyNameReference reference)
         {
@@ -74,18 +66,16 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             return false;
         }
 
-        public bool Handle(ModuleDefinition module)
+        public override bool Handle(ModuleDefinition module)
         {
             if (!module.AssemblyReferences.Any(IsMatch))
                 return false;
 
-            IEnumerable<TypeReference> enumerable = from p in module.GetTypeReferences().Where(IsMatch)
-                                                    orderby p.FullName
-                                                    select p;
-            HashSet<string> hashSet = new HashSet<string>();
-            foreach (TypeReference item in enumerable)
+            var enumerable = from p in module.GetTypeReferences().Where(IsMatch) orderby p.FullName select p;
+            var hashSet = new HashSet<string>();
+            foreach (var item in enumerable)
             {
-                AssemblyNameReference assemblyNameReference = TargetMap[item.FullName.Split('/')[0]];
+                var assemblyNameReference = TargetMap[item.FullName.Split('/')[0]];
                 if (!module.AssemblyReferences.Contains(assemblyNameReference) && !hashSet.Contains(assemblyNameReference.FullName))
                 {
                     module.AssemblyReferences.Add(assemblyNameReference);
@@ -119,24 +109,7 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
                     module.AssemblyReferences.RemoveAt(num);
                 }
             }
-            Flags.Add(InstructionHandleResult.Rewritten);
-            return true;
-        }
-
-        public bool Handle(ModuleDefinition module, TypeReference type, Action<TypeReference> replaceWith)
-        {
-            return false;
-        }
-
-        public bool Handle(ModuleDefinition module, ILProcessor cil, Instruction instruction)
-        {
-            return false;
-        }
-
-        public void Reset()
-        {
-            Flags.Clear();
-            Phrases.Clear();
+            return this.MarkRewritten();
         }
     }
 }

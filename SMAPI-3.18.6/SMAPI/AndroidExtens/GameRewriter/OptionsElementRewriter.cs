@@ -10,7 +10,7 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
     public static class OptionsElementRewriter
     {
         public static Type OptinosElementType = typeof(OptionsElement);
-        public static void Log(string msg) => Console.WriteLine("SV:" + msg);
+        public static void Log(string msg) => Console.WriteLine(msg);
 
         //Map OptionsElement Type & Method draw(spriteBatchslotX,slotY,context)
         public static Dictionary<string, MethodInfo> OptionsElementType = new();
@@ -57,5 +57,6 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
                 element.draw(b, slotX, slotY);
             }
         }
+
     }
 }

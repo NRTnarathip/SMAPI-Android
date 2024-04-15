@@ -110,9 +110,9 @@
     <Reference Include="System.Numerics">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>..\..\..\assemblies_zaneyork\System.Runtime.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Runtime, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -146,14 +146,13 @@
     <Compile Include="AndroidExtens\AndroidExtensions.cs" />
     <Compile Include="AndroidExtens\BuildDate.cs" />
     <Compile Include="AndroidExtens\ConsoleHook.cs" />
-    <Compile Include="AndroidExtens\GameRewriter\DummySoundBankRewriter.cs" />
-    <Compile Include="AndroidExtens\GameRewriter\ICueAllRewriter.cs" />
     <Compile Include="AndroidExtens\FileTool.cs" />
     <Compile Include="AndroidExtens\FolderCmdTool.cs" />
     <Compile Include="AndroidExtens\FolderPicker.cs" />
-    <Compile Include="AndroidExtens\Game1Rewrite.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\Game1Facade.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MapMethodToStaticMethodRewriter.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\MapPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\OptionsElementRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
@@ -519,6 +518,7 @@
       <Name>SMAPI.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\SMAPI.Internal.Patching\SMAPI.Internal.Patching.projitems" Label="Shared" />
   <Import Project="..\SMAPI.Internal\SMAPI.Internal.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

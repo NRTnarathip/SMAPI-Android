@@ -51,7 +51,7 @@ namespace StardewModdingAPI.Metadata
                 yield return new HeuristicMethodRewriter(this.ValidateReferencesToAssemblies);
 
                 //reReference module  src: from zaneyork
-                yield return new ModuleReferenceRewriter("System.*", new Dictionary<string, Version>
+                yield return new ModuleReferenceRewriter(new()
                 {
                 {
                     "System.Collections",
@@ -122,10 +122,17 @@ namespace StardewModdingAPI.Metadata
                     new Version(4, 0)
                 },
                 {
+                    "System.String",
+                    new Version(5, 0)
+                },
+                {
+                    "System.Runtime",
+                    new Version(4, 0)
+                },
+                {
                     "System.",
                     new Version(5, 0)
-                }
-                },
+                }},
                 [
                     typeof(CollectionBase).Assembly,
                     typeof(ISet<>).Assembly,
@@ -133,6 +140,7 @@ namespace StardewModdingAPI.Metadata
                     typeof(XmlDocument).Assembly,
                     typeof(XComment).Assembly,
                     typeof(Single).Assembly,
+                    typeof(string).Assembly,
                     typeof(IReadOnlySet<>).Assembly,
                     typeof(ReadOnlySpan<>).Assembly,
                     typeof(System.Data.DataTable).Assembly,
@@ -151,8 +159,9 @@ namespace StardewModdingAPI.Metadata
                     // Stardew Valley 1.5.5 (XNA => MonoGame method changes)
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
 
+                    .MapFacade<StardewValley.Menus.MapPage, MapPageFacade>()
                     // Stardew Valley PC To Android
-                    .MapFacade<Game1, Game1Rewrite>();
+                    .MapFacade<Game1, Game1Facade>();
 
                 yield return new SoundBankRewriter("patch soundBank");
                 yield return new MapMethodToStaticMethodRewriter()

@@ -9,8 +9,8 @@ namespace StardewModdingAPI.AndroidExtensions
     [HarmonyPatch(typeof(String))]
     public class StringSplitPatcher
     {
-        static void Log(object msg) => Android.Util.Log.Debug("NRT DEbug", msg.ToString());
-        static void Log(string msg) => Android.Util.Log.Debug("NRT DEbug", msg);
+        static void Log(object msg) => Android.Util.Log.Debug("NRT Debug", msg.ToString());
+        static void Log(string msg) => Android.Util.Log.Debug("NRT Debug", msg);
 
         //call this for init
         public static void Init()
@@ -58,13 +58,6 @@ namespace StardewModdingAPI.AndroidExtensions
                     harmony.Patch(methodInfo, postfix: new HarmonyMethod(postfix));
                 }
             }
-
-            //Test case
-            //var items = "Android, Window,   ios  ";
-            //var fixs = items.Split(',', int.MaxValue, System.StringSplitOptions.RemoveEmptyEntries + 1);
-            //foreach (var fix in fixs)
-            //    Log($"res fix: [{fix}]");
-
             Log("done init string split patcher");
         }
 
@@ -87,9 +80,7 @@ namespace StardewModdingAPI.AndroidExtensions
             if (__result.Length > 0)
                 SplitInternalTrimEntries(ref __result);
         }
-        //static int lastTick = 0;
-        //static int runSplitInternalTrimEntriesCount = 0;
-        //static Stopwatch SplitInternalTrimEntriesTimer = new();
+        static System.Diagnostics.Stopwatch SplitInternalTrimEntriesTimer = new();
         static void SplitInternalTrimEntries(ref string[] result)
         {
             //SplitInternalTrimEntriesTimer.Start();
@@ -98,19 +89,14 @@ namespace StardewModdingAPI.AndroidExtensions
                 result = result.Select(result => result.Trim()).ToArray();
             LastFlagIsNeedTrimEntries = false;
             LastFlag = 0;
-            //runSplitInternalTrimEntriesCount++;
+
 
             //SplitInternalTrimEntriesTimer.Stop();
-            //if (lastTick != Game1.ticks)
+            //if (Game1.ticks % 60 == 0)
             //{
-            //    AndroidLog.Log("runSplitInternalTrimEntriesCount: " + runSplitInternalTrimEntriesCount);
-            //    AndroidLog.Log("total time: " + SplitInternalTrimEntriesTimer.Elapsed.TotalMilliseconds + "ms");
-
-            //    lastTick = Game1.ticks;
-            //    runSplitInternalTrimEntriesCount = 0;
-            //    SplitInternalTrimEntriesTimer.Restart();
+            //    Log("string split hook total time: " + SplitInternalTrimEntriesTimer.Elapsed.TotalMilliseconds + "ms");
+            //    SplitInternalTrimEntriesTimer.Reset();
             //}
-
         }
 
 
