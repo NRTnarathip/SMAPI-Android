@@ -89,14 +89,14 @@ namespace StardewModdingAPI.AndroidExtens
         static long LastTimeFPSCounter = 0;
         internal static void OnEndDraw()
         {
-            var now = GameTimer.ElapsedMilliseconds;
-            fpsCounter++;
-            if (now - LastTimeFPSCounter > 1000)
-            {
-                Monitor?.Log($"FPS: {fpsCounter}", LogLevel.Debug);
-                fpsCounter = 0;
-                LastTimeFPSCounter = now;
-            }
+            //var now = GameTimer.ElapsedMilliseconds;
+            //fpsCounter++;
+            //if (now - LastTimeFPSCounter > 1000)
+            //{
+            //    Monitor?.Log($"FPS: {fpsCounter}", LogLevel.Debug);
+            //    fpsCounter = 0;
+            //    LastTimeFPSCounter = now;
+            //}
         }
     }
 }
