@@ -79,7 +79,7 @@
       <HintPath>..\..\..\assemblies_origin_dll\StardewValley.dll</HintPath>
     </Reference>
     <Reference Include="StardewValley.GameData">
-      <HintPath>..\..\..\StardewValley\StardewValley.GameData\bin\Debug\StardewValley.GameData.dll</HintPath>
+      <HintPath>..\..\..\assemblies_origin_dll\StardewValley.GameData.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>True</Private>

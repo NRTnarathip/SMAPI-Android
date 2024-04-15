@@ -19,13 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PintailAndroid", "Pintail\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarmonyAndroid", "Harmony\HarmonyAndroid\HarmonyAndroid.csproj", "{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImproveGame", "..\Mods Android\ImproveGame\ImproveGame.csproj", "{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72D0C91C-3438-460D-A10B-D8FDBB2E92B9}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,12 +62,6 @@ Global
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Mobile|Any CPU.Build.0 = Release|Any CPU
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Debug|Any CPU.ActiveCfg = Mobile|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Debug|Any CPU.Build.0 = Mobile|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Mobile|Any CPU.ActiveCfg = Mobile|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Mobile|Any CPU.Build.0 = Mobile|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B79EC8EE-C73E-4063-BDD4-92FC81F81ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
