@@ -151,6 +151,7 @@
     <Compile Include="AndroidExtens\FolderPicker.cs" />
     <Compile Include="AndroidExtens\GameRewriter\Game1Facade.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\ICueRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MapMethodToStaticMethodRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MapPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />

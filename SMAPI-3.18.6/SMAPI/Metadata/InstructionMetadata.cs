@@ -27,7 +27,6 @@ namespace StardewModdingAPI.Metadata
             "StardewModdingAPI",
             "Stardew Valley",
             "StardewValley",
-            "SAAT.API",
             "Netcode"
         };
 
@@ -159,15 +158,12 @@ namespace StardewModdingAPI.Metadata
                     // Stardew Valley 1.5.5 (XNA => MonoGame method changes)
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
                     .MapFacade<OptionsPage, OptionsPageFacade>()
-
-                    .MapFacade<StardewValley.Menus.MapPage, MapPageFacade>()
-                    // Stardew Valley PC To Android
+                    .MapFacade<MapPage, MapPageFacade>()
+                    .MapFacade<ICue, ICueFacde>()
                     .MapFacade<Game1, Game1Facade>();
 
                 yield return new SoundBankRewriter("patch soundBank");
                 yield return new MapMethodToStaticMethodRewriter()
-                    //.Add()
-
                     .Add(typeof(OptionsElement), (method) => method.Name == "draw",
                         typeof(OptionsElementRewriter), (method) => method.Name == "draw",
                         (map) =>
