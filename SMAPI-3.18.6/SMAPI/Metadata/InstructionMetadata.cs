@@ -158,6 +158,7 @@ namespace StardewModdingAPI.Metadata
 
                     // Stardew Valley 1.5.5 (XNA => MonoGame method changes)
                     .MapFacade<SpriteBatch, SpriteBatchFacade>()
+                    .MapFacade<OptionsPage, OptionsPageFacade>()
 
                     .MapFacade<StardewValley.Menus.MapPage, MapPageFacade>()
                     // Stardew Valley PC To Android

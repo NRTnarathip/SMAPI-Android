@@ -1,6 +1,4 @@
 ﻿using StardewValley.Menus;
-using System.Collections.Generic;
-using System.Reflection;
 namespace StardewModdingAPI.AndroidExtens;
 
 public class OptionsPagePatcher
@@ -20,14 +18,14 @@ public class OptionsPagePatcher
     static void PostfixCtor(int x, int y, int width, int height,
             float widthMod, float heightMod, OptionsPage __instance)
     {
-        var page = __instance;
-        var optionsPageType = typeof(OptionsPage);
+        //var page = __instance;
+        //var optionsPageType = typeof(OptionsPage);
 
-        FieldInfo optionsField = optionsPageType.GetField("options", BindingFlags.NonPublic | BindingFlags.Instance);
-        var options = (List<OptionsElement>)optionsField.GetValue(page);
+        //FieldInfo optionsField = optionsPageType.GetField("options", BindingFlags.NonPublic | BindingFlags.Instance);
+        //var options = (List<OptionsElement>)optionsField.GetValue(page);
 
-        var items = new List<OptionsElement>();
-        //items.Add(new OptionsButton("Saves Backup To Download", OnClickBackupSaves));
-        options.InsertRange(3, items);//insert memnu after button "Saves Backup" original game
+        //var items = new List<OptionsElement>();
+        ////items.Add(new OptionsButton("Saves Backup To Download", OnClickBackupSaves));
+        //options.InsertRange(3, items);//insert memnu after button "Saves Backup" original game
     }
 }

@@ -155,11 +155,12 @@
     <Compile Include="AndroidExtens\GameRewriter\MapPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\OptionsElementRewriter.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\OptionsPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />
-    <Compile Include="AndroidExtens\OptionsPagePatcher.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\OptionsPagePatcher.cs" />
     <Compile Include="AndroidExtens\PathTool.cs" />
     <Compile Include="AndroidExtens\ReferenceEqualityComparerPatcher.cs" />
     <Compile Include="AndroidExtens\SaveGamePatcher.cs" />

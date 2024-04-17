@@ -127,9 +127,6 @@ namespace StardewModdingAPI.Internal.ConsoleWriting
 
             // get color scheme ID
             MonitorColorScheme schemeID = colorConfig.UseScheme;
-            Android.Util.Log.Debug("NRT Debug", "try to get console color scheme on argument plateform: " + platform);
-            Android.Util.Log.Debug("NRT Debug", "Constants Plateform: " + Constants.Platform);
-
             if (schemeID == MonitorColorScheme.AutoDetect)
             {
                 schemeID = platform == Platform.Mac

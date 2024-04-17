@@ -58,8 +58,6 @@ namespace MonoMod.Utils
                  transpiler: new HarmonyMethod(typeof(MiniMonoModHotfix), nameof(ResolveTokenFix))
              );
 
-            Android.Util.Log.Debug("NRT Debug", "Done patch HarmonyLib.MethodBodyReader");
-
             harmony.Patch(
                 original: typeof(MonoMod.Utils.ReflectionHelper).Assembly
                     .GetType("MonoMod.Utils.DynamicMethodDefinition+<>c__DisplayClass3_0", throwOnError: true)!

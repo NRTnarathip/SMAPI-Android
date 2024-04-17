@@ -357,11 +357,9 @@ namespace StardewModdingAPI.Framework
             }
 
             // dispose core components
-            Android.Util.Log.Debug("NRT Debug", "Try Dispose Core Component isError?: " + isError);
             this.IsGameRunning = false;
             if (this.ExitState == ExitState.None || isError)
                 this.ExitState = isError ? ExitState.Crash : ExitState.GameExit;
-            Android.Util.Log.Debug("NRT Debug", "exit state: " + this.ExitState);
             this.ContentCore?.Dispose();
             this.Game?.Dispose();
             this.LogManager.Dispose(); // dispose last to allow for any last-second log messages
@@ -373,18 +371,15 @@ namespace StardewModdingAPI.Framework
             {
                 FieldInfo? field = typeof(StardewValley.Program).GetField("_sdk", BindingFlags.NonPublic | BindingFlags.Static);
                 SDKHelper? sdk = field?.GetValue(null) as SDKHelper;
-                Android.Util.Log.Debug("NRT Debug", "Can try to sdk shutdown");
                 sdk?.Shutdown();
             }
             catch (Exception ex)
             {
                 // well, at least we tried
-                Android.Util.Log.Debug("NRT Debug", "Catch error: " + ex);
             }
 
             // end game with error code
             // This helps the OS decide whether to keep the window open (e.g. Windows may keep it open on error).
-            Android.Util.Log.Debug("NRT Debug", "environment exit: " + this.ExitState);
             Environment.Exit(this.ExitState == ExitState.Crash ? 1 : 0);
         }
 

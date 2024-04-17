@@ -59,6 +59,7 @@ namespace SMAPILoader
             }
 
             Log("Done Init SMAPILoader");
+
         }
         static void ReplaceAllModule()
         {
