@@ -36,17 +36,6 @@ namespace SMAPILoader
                 //fix fix load first dependencies of Mono.Cecil
                 var runtimeSerialize = Path.Combine(CurrentDir, "System.Runtime.Serialization.dll");
                 Assembly.LoadFile(runtimeSerialize);
-
-                try
-                {
-                    //check smapi update
-                    CheckAndUpdateSMAPI();
-                }
-                catch (Exception ex)
-                {
-                    Log("Error try to check & update modules: " + ex.Message);
-                }
-
                 //fix fix use LoadFrom Not LoadFile
                 var smapi = Assembly.LoadFrom(Path.Combine(CurrentDir, "StardewModdingAPI.dll"));
                 Log("try call RunMain: " + smapi);
@@ -61,38 +50,7 @@ namespace SMAPILoader
             Log("Done Init SMAPILoader");
 
         }
-        static void ReplaceAllModule()
-        {
-            //replace all module
-            foreach (var newModulePath in Directory.GetFiles(CurrentDir))
-            {
-                var info = new FileInfo(newModulePath);
-                if (!info.Name.Contains("_New.dll"))
-                    continue;
 
-                var originalPath = newModulePath.Replace("_New.dll", ".dll");
-                File.Copy(newModulePath, originalPath, true);
-                File.Delete(newModulePath);
-                Log($"done copy file: {newModulePath} to: {originalPath}");
-            }
-
-        }
-
-        private static void CheckAndUpdateSMAPI()
-        {
-            //check file name 
-            //var currentPath = Assembly.GetEntryAssembly().Location;
-            var moduleNewUpdatePath = Path.Combine(CurrentDir, "StardewModdingAPI_New.dll");
-            if (File.Exists(moduleNewUpdatePath))
-            {
-                Log("Found module new update");
-                ReplaceAllModule();
-            }
-            else
-            {
-                Log("Not found module for new update");
-            }
-        }
         private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
             //bug when we use assembly.Location;
