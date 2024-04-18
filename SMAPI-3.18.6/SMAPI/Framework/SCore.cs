@@ -281,7 +281,7 @@ namespace StardewModdingAPI.Framework
                 // apply game patches
                 MiniMonoModHotfix.Apply();
                 HarmonyPatcher.Apply("SMAPI", this.Monitor,
-                    new Game1Patcher(this.Reflection, this.OnLoadStageChanged),
+                    new Patches.Game1Patcher(this.Reflection, this.OnLoadStageChanged),
                     new TitleMenuPatcher(this.OnLoadStageChanged)
                 );
                 // set window titles

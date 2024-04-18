@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.AndroidExtens.GameRewriter;
+using StardewModdingAPI.AndroidExtens.ModsRewriter;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Framework.ModLoading;
 using StardewModdingAPI.Framework.ModLoading.Finders;
@@ -145,7 +146,6 @@ namespace StardewModdingAPI.Metadata
                     typeof(System.Data.DataTable).Assembly,
                 ]);
 
-
                 // specific versions
                 yield return new ReplaceReferencesRewriter()
                     // Stardew Valley 1.5 (fields moved)
@@ -170,6 +170,7 @@ namespace StardewModdingAPI.Metadata
                         {
                             map.AddPramToSrc(typeof(IClickableMenu));
                         });
+                yield return new SVERewriter();
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();

@@ -37,6 +37,7 @@ namespace StardewModdingAPI
             SaveGamePatcher.Init();
             OptionsPagePatcher.Init();
             FolderPicker.Init();
+            Game1Patcher.Init();
 
             new Harmony(typeof(Program).FullName).PatchAll();
         }
