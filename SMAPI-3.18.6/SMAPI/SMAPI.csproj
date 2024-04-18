@@ -147,7 +147,6 @@
     <Compile Include="AndroidExtens\BuildDate.cs" />
     <Compile Include="AndroidExtens\ConsoleHook.cs" />
     <Compile Include="AndroidExtens\FileTool.cs" />
-    <Compile Include="AndroidExtens\FolderCmdTool.cs" />
     <Compile Include="AndroidExtens\FolderPicker.cs" />
     <Compile Include="AndroidExtens\GameRewriter\Game1Facade.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
@@ -166,7 +165,6 @@
     <Compile Include="AndroidExtens\PathTool.cs" />
     <Compile Include="AndroidExtens\ReferenceEqualityComparerPatcher.cs" />
     <Compile Include="AndroidExtens\SaveGamePatcher.cs" />
-    <Compile Include="AndroidExtens\SMAPIUpdateTool.cs" />
     <Compile Include="AndroidExtens\StringSplitPatcher.cs" />
     <Compile Include="AndroidExtens\TitleMenuPatcher.cs" />
     <Compile Include="Src\Constants.cs" />
