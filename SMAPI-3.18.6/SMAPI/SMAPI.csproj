@@ -144,29 +144,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidExtens\AndroidExtensions.cs" />
-    <Compile Include="AndroidExtens\BuildDate.cs" />
     <Compile Include="AndroidExtens\ConsoleHook.cs" />
     <Compile Include="AndroidExtens\FileTool.cs" />
     <Compile Include="AndroidExtens\FolderPicker.cs" />
+    <Compile Include="AndroidExtens\GameRewriter\CraftingPageMobileRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\Game1Facade.cs" />
     <Compile Include="AndroidExtens\GamePerformance.cs" />
     <Compile Include="AndroidExtens\GameRewriter\ICueRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MapMethodToStaticMethodRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\MapPageFacade.cs" />
-    <Compile Include="AndroidExtens\GameRewriter\MyGameRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\OptionsElementRewriter.cs" />
     <Compile Include="AndroidExtens\GameRewriter\OptionsPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
+    <Compile Include="AndroidExtens\ModsRewriter\SpaceCoreRewriter.cs" />
     <Compile Include="AndroidExtens\ModsRewriter\SVERewriter.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />
-    <Compile Include="AndroidExtens\GameRewriter\OptionsPagePatcher.cs" />
     <Compile Include="AndroidExtens\PathTool.cs" />
-    <Compile Include="AndroidExtens\ReferenceEqualityComparerPatcher.cs" />
-    <Compile Include="AndroidExtens\SaveGamePatcher.cs" />
     <Compile Include="AndroidExtens\StringSplitPatcher.cs" />
     <Compile Include="AndroidExtens\TitleMenuPatcher.cs" />
+    <Compile Include="AndroidExtens\TypeRewriter.cs" />
     <Compile Include="Src\Constants.cs" />
     <Compile Include="Src\ContentSource.cs" />
     <Compile Include="Src\Context.cs" />

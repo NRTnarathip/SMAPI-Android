@@ -59,11 +59,13 @@ namespace StardewModdingAPI.Framework.Input
         /// <summary>Update the current button states for the given tick.</summary>
         public void TrueUpdate()
         {
+            //Console.WriteLine("Start True Update: Tick " + Game1.ticks);
             // update base state
             base.Update();
 
             // update SMAPI extended data
             // note: Stardew Valley is *not* in UI mode when this code runs
+            //Console.WriteLine($"SInputState: mouse pos: " + base.GetMouseState().Position);
             try
             {
                 float zoomMultiplier = (1f / Game1.options.zoomLevel);
@@ -110,10 +112,12 @@ namespace StardewModdingAPI.Framework.Input
                     this.CursorPositionImpl = this.GetCursorPosition(this.MouseState, cursorAbsolutePos, zoomMultiplier);
                 }
             }
-            catch (InvalidOperationException)
+            catch (Exception ex)
             {
                 // GetState() may crash for some players if window doesn't have focus but game1.IsActive == true
+                Console.WriteLine("Error True Update: " + ex);
             }
+            //Console.WriteLine("End True Update Tick: " + Game1.ticks);
         }
 
         /// <summary>Get the gamepad state visible to the game.</summary>

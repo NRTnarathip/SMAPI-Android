@@ -19,9 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PintailAndroid", "Pintail\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarmonyAndroid", "Harmony\HarmonyAndroid\HarmonyAndroid.csproj", "{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImproveGame", "..\Mods Android\ImproveGame\ImproveGame.csproj", "{C6C923E0-6C77-4C8E-85FE-C11BC82154F6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualKeyboard", "..\Mods Android\VirtualKeyboard\VirtualKeyboard.csproj", "{6771C524-A9E5-4BDE-BB9E-86BF2239ACFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImproveGame", "..\Mods Android\ImproveGame\ImproveGame.csproj", "{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,14 +51,10 @@ Global
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{007B1D1A-90EF-4DF0-A6DD-3A2376CF9333}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6C923E0-6C77-4C8E-85FE-C11BC82154F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6C923E0-6C77-4C8E-85FE-C11BC82154F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6C923E0-6C77-4C8E-85FE-C11BC82154F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6C923E0-6C77-4C8E-85FE-C11BC82154F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6771C524-A9E5-4BDE-BB9E-86BF2239ACFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6771C524-A9E5-4BDE-BB9E-86BF2239ACFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6771C524-A9E5-4BDE-BB9E-86BF2239ACFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6771C524-A9E5-4BDE-BB9E-86BF2239ACFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -37,8 +37,16 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
                 return false;
 
             // skip if not broken
+            //try
+            //{
             if (methodRef.Resolve() != null)
                 return false;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("fixbug] try solve method" + methodRef.FullName);
+            //    Console.WriteLine("fixbug] error" + ex);
+            //}
 
             // get type
             TypeDefinition? type = methodRef.DeclaringType.Resolve();
@@ -74,7 +82,6 @@ namespace StardewModdingAPI.Framework.ModLoading.Rewriters
             foreach (Instruction? loadInstruction in loadInstructions)
                 cil.InsertBefore(instruction, loadInstruction);
             instruction.Operand = module.ImportReference(method);
-
             this.Phrases.Add($"{methodRef.DeclaringType.Name}.{methodRef.Name} (added missing optional parameters)");
             return this.MarkRewritten();
         }

@@ -10,7 +10,6 @@ namespace StardewModdingAPI.AndroidExtens
     internal class TitleMenuPatcher
     {
         static SpriteFont font;
-        static bool isHasCheckUpdate = false;
         static void RenderSMAPVersionIInfo(SpriteBatch b)
         {
             var viewport = Game1.viewport;
@@ -35,12 +34,6 @@ namespace StardewModdingAPI.AndroidExtens
         [HarmonyPatch("draw", [typeof(SpriteBatch)])]
         static void PostfixDraw(SpriteBatch b, TitleMenu __instance)
         {
-            if (!isHasCheckUpdate)
-            {
-                isHasCheckUpdate = true;
-                SMAPIUpdateTool.CheckAllCommand();
-            }
-
             //check if it's on customize character, so we dont need render
             if (TitleMenu.subMenu != null)
                 return;

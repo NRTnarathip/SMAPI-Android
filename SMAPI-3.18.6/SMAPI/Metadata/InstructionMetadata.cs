@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.AndroidExtens;
 using StardewModdingAPI.AndroidExtens.GameRewriter;
 using StardewModdingAPI.AndroidExtens.ModsRewriter;
 using StardewModdingAPI.Events;
@@ -139,7 +140,6 @@ namespace StardewModdingAPI.Metadata
                     typeof(HashSet<>).Assembly,
                     typeof(XmlDocument).Assembly,
                     typeof(XComment).Assembly,
-                    typeof(Single).Assembly,
                     typeof(string).Assembly,
                     typeof(IReadOnlySet<>).Assembly,
                     typeof(ReadOnlySpan<>).Assembly,
@@ -161,7 +161,7 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<MapPage, MapPageFacade>()
                     .MapFacade<ICue, ICueFacde>()
                     .MapFacade<Game1, Game1Facade>();
-
+                yield return new TypeRewriter("StardewValley.Menus.CraftingPage", typeof(CraftingPageMobileRewriter));
                 yield return new SoundBankRewriter("patch soundBank");
                 yield return new MapMethodToStaticMethodRewriter()
                     .Add(typeof(OptionsElement), (method) => method.Name == "draw",
@@ -171,6 +171,7 @@ namespace StardewModdingAPI.Metadata
                             map.AddPramToSrc(typeof(IClickableMenu));
                         });
                 yield return new SVERewriter();
+                yield return new SpaceCoreRewriter();
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();

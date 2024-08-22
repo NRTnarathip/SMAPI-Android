@@ -34,8 +34,6 @@ namespace StardewModdingAPI
             //Init my android Extens
             OnCreatePartTwoPatcher.Init();
             StringSplitPatcher.Init();
-            SaveGamePatcher.Init();
-            OptionsPagePatcher.Init();
             FolderPicker.Init();
             Game1Patcher.Init();
 
@@ -51,7 +49,7 @@ namespace StardewModdingAPI
         private static Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs e)
         {
 
-            AndroidLog.Log("Try to resolve assembly: " + e.Name + ", Request From: " + e.RequestingAssembly.FullName);
+            //Console.WriteLine("fixbug] Try to resolve assembly: " + e.Name + ", Request From: " + e.RequestingAssembly.FullName);
 
             // cache assembly paths by name
             if (Program.AssemblyPathsByName == null)
@@ -86,8 +84,8 @@ namespace StardewModdingAPI
                 if (dllName == "Mono.Cecil")
                 {
                     var cecil = Assembly.Load("Mono.Cecil");
-                    AndroidLog.Log("it's already mono cecil: " + cecil);
-                    AndroidLog.Log("mono cecil path: " + cecil.Location);
+                    //AndroidLog.Log("it's already mono cecil: " + cecil);
+                    //AndroidLog.Log("mono cecil path: " + cecil.Location);
                     return cecil;
                 }
 
@@ -95,16 +93,16 @@ namespace StardewModdingAPI
                 var resultLoad = searchName != null && Program.AssemblyPathsByName.TryGetValue(searchName, out string? assemblyPath)
                     ? Assembly.LoadFrom(assemblyPath)
                     : null;
-                if (resultLoad != null)
-                {
-                    AndroidLog.Log("Done resulve: " + resultLoad);
-                }
+                //if (resultLoad != null)
+                //{
+                //    AndroidLog.Log("Done resulve: " + resultLoad);
+                //}
                 return resultLoad;
             }
             catch (Exception ex)
             {
 
-                Android.Util.Log.Debug("NRT DEbug", "Error resolving assembly:: " + ex);
+                //Android.Util.Log.Debug("NRT DEbug", "Error resolving assembly:: " + ex);
                 return null;
             }
         }
@@ -114,7 +112,6 @@ namespace StardewModdingAPI
         internal static void Start()
         {
             string modsPath = Path.Combine(Constants.GamePath, "Mods");
-            AndroidLog.Log("Mods path: " + modsPath);
             core = new(modsPath, false, false);
             core.RunInteractively();
         }

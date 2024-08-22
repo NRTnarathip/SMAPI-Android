@@ -18,6 +18,7 @@ public static class AndroidExtensions
 public static class AndroidLog
 {
     public static void Log(string msg) => Android.Util.Log.Debug("NRT Debug", "[NRT Debug] " + msg);
+    public static void Fixbug(string msg) => Android.Util.Log.Debug("NRT Fixbug", "[NRT Fixbug] " + msg);
 }
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]

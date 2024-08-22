@@ -138,7 +138,6 @@ namespace StardewModdingAPI.Framework.ModLoading
                     continue;
 
                 // rewrite assembly
-                //Console.WriteLine("SV: starting rewriter asm: " + assembly.Definition.Name);
                 bool changed = this.RewriteAssembly(mod, assembly.Definition, loggedMessages, logPrefix: "      ");
                 var loadedAssemblies = new HashSet<string>(AppDomain.CurrentDomain.GetAssemblies().Select(asm => asm.GetName().Name));
 
@@ -188,7 +187,6 @@ namespace StardewModdingAPI.Framework.ModLoading
 
                 // track loaded assembly for definition resolution
                 this.AssemblyDefinitionResolver.Add(assembly.Definition);
-                //Monitor.Log("Lod Mod To Assembly Define Resovler: " + assembly.Definition.Name);
             }
 
 #if SMAPI_DEPRECATED
@@ -243,7 +241,7 @@ namespace StardewModdingAPI.Framework.ModLoading
             }
             catch (AssemblyResolutionException ex)
             {
-                Android.Util.Log.Debug("NRT DEbug", "error on try to resolve asm: " + ex.Message);
+                //Console.WriteLine("[NRT Debuug] error on try to resolve asm: " + ex.Message);
                 return false;
             }
         }
