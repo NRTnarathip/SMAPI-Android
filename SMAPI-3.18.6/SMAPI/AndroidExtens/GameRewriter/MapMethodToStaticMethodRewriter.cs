@@ -10,7 +10,7 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
 {
     internal class MapMethodToStaticMethodRewriter : BaseInstructionHandler
     {
-        public class MapMethodToStatic(MethodInfo srcMethod, MethodInfo newMethod)
+        public class MapMethodToStaticKeyValue(MethodInfo srcMethod, MethodInfo newMethod)
         {
             public readonly MethodInfo srcMethod = srcMethod;
             public readonly MethodInfo newMethod = newMethod;
@@ -29,12 +29,11 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
                 }
             }
         }
-        public static void Log(string msg) => Console.WriteLine("Rewriter: " + msg);
+        public static void Log(string msg) => AndroidLog.Log("Fixbug Rewriter: " + msg);
 
         //key == Src Method FullName
-        public readonly Dictionary<string, MapMethodToStatic> MapMethods = new();
+        public readonly Dictionary<string, MapMethodToStaticKeyValue> MapMethods = new();
         //lookup with type
-        public readonly HashSet<string> MapMethosTypeLookup = new();
         public MapMethodToStaticMethodRewriter() : base("map this method to static method(this object self, ...)")
         {
 
@@ -48,9 +47,9 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
             return $"{returnFullName} {type}::{method.Name}({paramsFullName})";
         }
         public delegate bool SelectMethodCallbackDelegate(MethodInfo method);
-        public delegate void PostEditAddMethod(MapMethodToStatic mapMethod);
+        public delegate void PostEditAddMethod(MapMethodToStaticKeyValue mapMethod);
 
-        public MethodInfo SelectMethod(Type type, SelectMethodCallbackDelegate selectorCallback)
+        public MethodInfo HandleSelectorMethod(Type type, SelectMethodCallbackDelegate selectorCallback)
         {
             var methods = type.GetMethods();
             foreach (var m in methods)
@@ -61,11 +60,13 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
             return null;
         }
 
-        public MapMethodToStaticMethodRewriter Add(Type srcType, SelectMethodCallbackDelegate srcMethodSelector,
-            Type newType, SelectMethodCallbackDelegate newMethodSelector,
+        public MapMethodToStaticMethodRewriter Add(Type srcType,
+            SelectMethodCallbackDelegate srcMethodSelector,
+            Type newType,
+            SelectMethodCallbackDelegate newMethodSelector,
             PostEditAddMethod option = null)
         {
-            var srcMethod = SelectMethod(srcType, srcMethodSelector);
+            var srcMethod = HandleSelectorMethod(srcType, srcMethodSelector);
             if (srcMethod == null)
             {
                 Log("Errror not found src method in type: " + srcType);
@@ -73,17 +74,14 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
 
             }
 
-            var newMethod = SelectMethod(newType, newMethodSelector);
+            var newMethod = HandleSelectorMethod(newType, newMethodSelector);
             if (newMethod == null)
             {
                 Log("Errror not found new method in type: " + newType);
                 return this;
             }
 
-            var mapMethod = new MapMethodToStatic(srcMethod, newMethod);
-
-            if (MapMethosTypeLookup.Contains(srcMethod.DeclaringType.FullName) == false)
-                MapMethosTypeLookup.Add(srcMethod.DeclaringType.FullName);
+            var mapMethod = new MapMethodToStaticKeyValue(srcMethod, newMethod);
 
             if (option != null)
                 option.Invoke(mapMethod);
@@ -93,24 +91,19 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
             Log("done add map method: " + mapMethod.srcMethodFullName);
             return this;
         }
-        public static readonly Dictionary<string, MethodReference> MapMethodsHasEdit = new();
         public override bool Handle(ModuleDefinition module, ILProcessor cil, Instruction instruction)
         {
-            MethodReference methodByIL = RewriteHelper.AsMethodReference(instruction);
-            if (methodByIL == null)
+            var thisMethod = RewriteHelper.AsMethodReference(instruction);
+            if (thisMethod == null)
                 return false;
 
-            if (!MapMethosTypeLookup.Contains(methodByIL.DeclaringType.FullName))
-                return false;
-
-            if (!MapMethods.ContainsKey(methodByIL.FullName))
-                return false;
-
-            var mapMethod = MapMethods[methodByIL.FullName];
-            instruction.Operand = module.ImportReference(mapMethod.newMethod);
-            MapMethodsHasEdit.TryAdd(methodByIL.FullName, methodByIL);
-            return this.MarkRewritten();
-
+            if (MapMethods.TryGetValue(thisMethod.FullName, out var newMethodRef))
+            {
+                instruction.Operand = module.ImportReference(newMethodRef.newMethod);
+                Console.WriteLine("fixbug] done fix method: " + thisMethod.FullName + ", with:" + newMethodRef.newMethod.Name);
+                return this.MarkRewritten();
+            }
+            return false;
         }
     }
 }

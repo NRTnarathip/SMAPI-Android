@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="AndroidExtens\AndroidExtensions.cs" />
     <Compile Include="AndroidExtens\ConsoleHook.cs" />
+    <Compile Include="AndroidExtens\EnumRewriter.cs" />
     <Compile Include="AndroidExtens\FileTool.cs" />
     <Compile Include="AndroidExtens\FolderPicker.cs" />
     <Compile Include="AndroidExtens\GameRewriter\CraftingPageMobileRewriter.cs" />

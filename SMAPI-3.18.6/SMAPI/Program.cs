@@ -49,8 +49,6 @@ namespace StardewModdingAPI
         private static Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs e)
         {
 
-            //Console.WriteLine("fixbug] Try to resolve assembly: " + e.Name + ", Request From: " + e.RequestingAssembly.FullName);
-
             // cache assembly paths by name
             if (Program.AssemblyPathsByName == null)
             {
@@ -84,8 +82,6 @@ namespace StardewModdingAPI
                 if (dllName == "Mono.Cecil")
                 {
                     var cecil = Assembly.Load("Mono.Cecil");
-                    //AndroidLog.Log("it's already mono cecil: " + cecil);
-                    //AndroidLog.Log("mono cecil path: " + cecil.Location);
                     return cecil;
                 }
 
@@ -93,10 +89,6 @@ namespace StardewModdingAPI
                 var resultLoad = searchName != null && Program.AssemblyPathsByName.TryGetValue(searchName, out string? assemblyPath)
                     ? Assembly.LoadFrom(assemblyPath)
                     : null;
-                //if (resultLoad != null)
-                //{
-                //    AndroidLog.Log("Done resulve: " + resultLoad);
-                //}
                 return resultLoad;
             }
             catch (Exception ex)

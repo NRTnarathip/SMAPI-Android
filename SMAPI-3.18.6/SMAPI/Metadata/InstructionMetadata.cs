@@ -166,10 +166,8 @@ namespace StardewModdingAPI.Metadata
                 yield return new MapMethodToStaticMethodRewriter()
                     .Add(typeof(OptionsElement), (method) => method.Name == "draw",
                         typeof(OptionsElementRewriter), (method) => method.Name == "draw",
-                        (map) =>
-                        {
-                            map.AddPramToSrc(typeof(IClickableMenu));
-                        });
+                        (map) => { map.AddPramToSrc(typeof(IClickableMenu)); });
+                yield return new EnumRewriter();
                 yield return new SVERewriter();
                 yield return new SpaceCoreRewriter();
 

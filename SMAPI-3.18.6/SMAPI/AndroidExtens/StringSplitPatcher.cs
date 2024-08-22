@@ -9,13 +9,9 @@ namespace StardewModdingAPI.AndroidExtensions
     [HarmonyPatch(typeof(String))]
     public class StringSplitPatcher
     {
-        static void Log(object msg) => Android.Util.Log.Debug("NRT Debug", msg.ToString());
-        static void Log(string msg) => Android.Util.Log.Debug("NRT Debug", msg);
-
         //call this for init
         public static void Init()
         {
-            Log("On init String Split Patcher..");
             var harmony = new Harmony(nameof(StringSplitPatcher));
             var ThisType = typeof(StringSplitPatcher);
             var StringType = typeof(String);
@@ -58,7 +54,6 @@ namespace StardewModdingAPI.AndroidExtensions
                     harmony.Patch(methodInfo, postfix: new HarmonyMethod(postfix));
                 }
             }
-            Log("done init string split patcher");
         }
 
         static int LastFlag = 0;

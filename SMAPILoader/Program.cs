@@ -15,7 +15,7 @@ namespace SMAPILoader
         }
         public static void Log(string msg)
         {
-            Android.Util.Log.Debug("NRT Debug", "[SMAPILoader] " + msg);
+            //Android.Util.Log.Debug("NRT Debug", "[SMAPILoader] " + msg);
             //var fullMessage = $"{msg}";
             //string logFilePath = "/storage/emulated/0/Download/log.txt";
             //logToFile(logFilePath, fullMessage);
