@@ -100,7 +100,6 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
             if (MapMethods.TryGetValue(thisMethod.FullName, out var newMethodRef))
             {
                 instruction.Operand = module.ImportReference(newMethodRef.newMethod);
-                Console.WriteLine("fixbug] done fix method: " + thisMethod.FullName + ", with:" + newMethodRef.newMethod.Name);
                 return this.MarkRewritten();
             }
             return false;
