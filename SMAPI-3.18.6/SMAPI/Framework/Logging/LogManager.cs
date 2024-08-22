@@ -287,8 +287,9 @@ namespace StardewModdingAPI.Framework.Logging
                 this.Monitor.Log("You disabled update checks, so you won't be notified of new SMAPI or mod updates. Running an old version of SMAPI is not recommended. You can undo this by reinstalling SMAPI.", LogLevel.Warn);
             if (!settings.RewriteMods)
                 this.Monitor.Log("You disabled rewriting broken mods, so many older mods may fail to load. You can undo this by reinstalling SMAPI.", LogLevel.Info);
-            if (!this.Monitor.WriteToConsole)
-                this.Monitor.Log("Writing to the terminal is disabled because the --no-terminal argument was received. This usually means launching the terminal failed.", LogLevel.Warn);
+
+            //if (!this.Monitor.WriteToConsole)
+            //    this.Monitor.Log("Writing to the terminal is disabled because the --no-terminal argument was received. This usually means launching the terminal failed.", LogLevel.Warn);
 
             // verbose logging
             this.Monitor.VerboseLog("Verbose logging enabled.");

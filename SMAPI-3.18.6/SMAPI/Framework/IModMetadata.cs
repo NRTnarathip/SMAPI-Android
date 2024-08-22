@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using StardewModdingAPI.Framework.ModHelpers;
 using StardewModdingAPI.Framework.ModLoading;
 using StardewModdingAPI.Toolkit.Framework.Clients.WebApi;
 using StardewModdingAPI.Toolkit.Framework.ModData;
 using StardewModdingAPI.Toolkit.Framework.UpdateData;
+using System;
+using System.Collections.Generic;
 
 namespace StardewModdingAPI.Framework
 {
