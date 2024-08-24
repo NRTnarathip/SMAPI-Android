@@ -628,6 +628,7 @@ namespace StardewModdingAPI.Framework
                 this.Monitor.Log($"An error occurred in the overridden update loop: {ex.GetLogSummary()}", LogLevel.Error);
                 Monitor.Log($"{ex.StackTrace}");
                 Monitor.Log($"{ex.TargetSite}");
+                //Monitor.Log($"Hehe");
                 // exit if irrecoverable
                 if (!this.UpdateCrashTimer.Decrement())
                     this.ExitGameImmediately("The game crashed when updating, and SMAPI was unable to recover the game.");

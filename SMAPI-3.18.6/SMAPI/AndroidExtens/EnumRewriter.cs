@@ -9,15 +9,14 @@ namespace StardewModdingAPI.AndroidExtens
     public static class EnumMethods
     {
         //support Template Type
-        //public static bool IsDefined<TEnum>(TEnum value) where TEnum : struct, Enum
-        //{
-        //    return Enum.IsDefined(typeof(TEnum), value);
-        //}
-        public static bool IsDefined<TEnum>(TEnum value) where TEnum : struct, Enum
+        public static bool IsDefined<T>(T value) where T : struct, Enum
         {
-            Type typeFromHandle = typeof(TEnum);
-            return Enum.IsDefined(typeFromHandle, value);
+            return Enum.IsDefined(typeof(T), value);
         }
+        //public static string[] GetNames<T>() where T : struct, Enum
+        //{
+        //    return Enum.GetNames(typeof(T));
+        //}
     }
     internal class EnumRewriter : BaseInstructionHandler
     {
@@ -37,6 +36,7 @@ namespace StardewModdingAPI.AndroidExtens
                 return MarkRewritten();
             }
 
+
             return false;
         }
         void RewriteIsDefined(ModuleDefinition module, ILProcessor cil, Instruction instruction)
@@ -49,5 +49,6 @@ namespace StardewModdingAPI.AndroidExtens
             newMethodOperand.GenericArguments.AddRange(genericInstanceMethod.GenericArguments);
             instruction.Operand = newMethodOperand;
         }
+
     }
 }

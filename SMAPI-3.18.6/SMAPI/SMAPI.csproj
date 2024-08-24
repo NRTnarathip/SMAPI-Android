@@ -123,13 +123,8 @@
     <Reference Include="System.Security">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Serialization">
       <Private>True</Private>
     </Reference>
     <Reference Include="TMXTile">
@@ -158,7 +153,6 @@
     <Compile Include="AndroidExtens\GameRewriter\OptionsPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
-    <Compile Include="AndroidExtens\ModsRewriter\SpaceCoreRewriter.cs" />
     <Compile Include="AndroidExtens\ModsRewriter\SVERewriter.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />

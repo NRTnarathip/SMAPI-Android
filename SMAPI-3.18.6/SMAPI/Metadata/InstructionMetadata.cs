@@ -161,6 +161,7 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<MapPage, MapPageFacade>()
                     .MapFacade<ICue, ICueFacde>()
                     .MapFacade<Game1, Game1Facade>();
+
                 yield return new TypeRewriter("StardewValley.Menus.CraftingPage", typeof(CraftingPageMobileRewriter));
                 yield return new SoundBankRewriter("patch soundBank");
                 yield return new MapMethodToStaticMethodRewriter()
@@ -169,7 +170,7 @@ namespace StardewModdingAPI.Metadata
                         (map) => { map.AddPramToSrc(typeof(IClickableMenu)); });
                 yield return new EnumRewriter();
                 yield return new SVERewriter();
-                yield return new SpaceCoreRewriter();
+
 
                 // 32-bit to 64-bit in Stardew Valley 1.5.5
                 yield return new ArchitectureAssemblyRewriter();

@@ -88,7 +88,6 @@ namespace StardewModdingAPI.AndroidExtens.GameRewriter
 
             //added make sure you finsih edit src & new method full name
             MapMethods.TryAdd(mapMethod.srcMethodFullName, mapMethod);
-            Log("done add map method: " + mapMethod.srcMethodFullName);
             return this;
         }
         public override bool Handle(ModuleDefinition module, ILProcessor cil, Instruction instruction)

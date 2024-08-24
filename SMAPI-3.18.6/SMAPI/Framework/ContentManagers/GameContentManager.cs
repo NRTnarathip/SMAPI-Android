@@ -243,6 +243,7 @@ namespace StardewModdingAPI.Framework.ContentManagers
             foreach (AssetEditOperation editor in editors)
             {
                 IModMetadata mod = editor.Mod;
+                //AndroidLog.Log("fixbug] try edit: " + asset.Name);
 
                 // try edit
                 object prevAsset = asset.Data;

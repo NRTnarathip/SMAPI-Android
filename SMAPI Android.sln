@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarmonyAndroid", "Harmony\H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImproveGame", "..\Mods Android\ImproveGame\ImproveGame.csproj", "{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnCode", "LearnCode\LearnCode.csproj", "{B05FC183-D4B3-49AF-AA2D-D95C02EB7A27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A98F20E7-D4C2-4FE9-BEA8-F4673D2C223A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05FC183-D4B3-49AF-AA2D-D95C02EB7A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05FC183-D4B3-49AF-AA2D-D95C02EB7A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05FC183-D4B3-49AF-AA2D-D95C02EB7A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05FC183-D4B3-49AF-AA2D-D95C02EB7A27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
