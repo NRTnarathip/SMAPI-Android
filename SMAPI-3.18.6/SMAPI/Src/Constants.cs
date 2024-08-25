@@ -369,6 +369,9 @@ namespace StardewModdingAPI
         private static string? GetSaveFolderPathIfExists()
         {
             DirectoryInfo? saveFolder = Constants.GetSaveFolder();
+            //Console.WriteLine("qwe; on GetSaveFolderPathIfExists()");
+            //Console.WriteLine("qwe; saveFolder.Exsists: " + saveFolder.Exists);
+            //Console.WriteLine("qwe; saveFolder.FullName: " + saveFolder.FullName);
             return saveFolder?.Exists == true
                 ? saveFolder.FullName
                 : null;
@@ -379,7 +382,10 @@ namespace StardewModdingAPI
         {
             // save not available
             if (Context.LoadStage == LoadStage.None)
+            {
+                //Console.WriteLine("qwe; not save available");
                 return null;
+            }
 
             // get basic info
             string rawSaveName = Game1.GetSaveGameName(set_value: false);
@@ -397,9 +403,10 @@ namespace StardewModdingAPI
                     if (folder.Exists)
                         return folder;
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
                     // ignore invalid path
+                    //Console.WriteLine("qwe; ignore invalid path; " + ex.Message);
                 }
             }
 
