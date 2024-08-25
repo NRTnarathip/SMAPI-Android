@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -761,26 +762,22 @@ namespace StardewModdingAPI.Framework
                 // during enumeration errors). To avoid problems, events are not invoked while a save
                 // is in progress. It's safe to raise SaveEvents.BeforeSave as soon as the menu is
                 // opened (since the save hasn't started yet), but all other events should be suppressed.
+                var st = new Stopwatch();
+                st.Start();
                 if (Context.IsSaving)
                 {
-                    //Monitor.Log("On try saving");
-                    //Monitor.Log($"is world ready: {Context.IsWorldReady},  is between create events: {instance.IsBetweenCreateEvents}");
                     // raise before-create
                     if (!Context.IsWorldReady && !instance.IsBetweenCreateEvents)
                     {
                         instance.IsBetweenCreateEvents = true;
-                        this.Monitor.Log("Context: before save creation.");
                         events.SaveCreating.RaiseEmpty();
-                        this.Monitor.Log("Context: Done events.SaveCreating.RaiseEmpty();");
                     }
 
                     // raise before-save
                     if (Context.IsWorldReady && !instance.IsBetweenSaveEvents)
                     {
-                        this.Monitor.Log("Context: before save.");
                         instance.IsBetweenSaveEvents = true;
                         events.Saving.RaiseEmpty();
-                        this.Monitor.Log("Context: Done events.Saving.RaiseEmpty();");
                     }
 
                     // suppress non-save events

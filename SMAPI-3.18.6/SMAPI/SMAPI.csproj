@@ -466,6 +466,7 @@
     <Compile Include="Utilities\DelegatingModHooks.cs" />
     <Compile Include="Utilities\Keybind.cs" />
     <Compile Include="Utilities\KeybindList.cs" />
+    <Compile Include="Utilities\MethodHelper.cs" />
     <Compile Include="Utilities\PathUtilities.cs" />
     <Compile Include="Utilities\PerScreen.cs" />
     <Compile Include="Utilities\SDate.cs" />

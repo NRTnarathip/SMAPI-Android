@@ -95,6 +95,21 @@ namespace StardewModdingAPI.Framework.ContentManagers
         }
 
         /// <inheritdoc />
+        //static Stopwatch Stopwatch = new Stopwatch();
+        //public override T LoadExact<T>(IAssetName assetName, bool useCache)
+        //{
+        //    Stopwatch.Restart();
+        //    var result = LoadExactInternal<T>(assetName, useCache);
+        //    Stopwatch.Stop();
+        //    var ms = Stopwatch.Elapsed.TotalMilliseconds;
+        //    if (ms >= 0.1)
+        //    {
+        //        Console.WriteLine($"qwe; LoadExact: assetName: {assetName.Name}");
+        //        Console.WriteLine("qwe; LoadExact Time: " + ms + " ms");
+        //    }
+        //    return result;
+        //}
+        //private T LoadExactInternal<T>(IAssetName assetName, bool useCache)
         public override T LoadExact<T>(IAssetName assetName, bool useCache)
         {
             if (typeof(IRawTextureData).IsAssignableFrom(typeof(T)))
@@ -131,16 +146,90 @@ namespace StardewModdingAPI.Framework.ContentManagers
             {
                 data = this.AssetsBeingLoaded.Track(assetName.Name, () =>
                 {
+
                     IAssetInfo info = new AssetInfo(assetName.LocaleCode, assetName, typeof(T), this.AssertAndNormalizeAssetName);
                     AssetOperationGroup? operations = this.Coordinator.GetAssetOperations
 #if SMAPI_DEPRECATED
                         <T>
 #endif
                         (info);
-                    IAssetData asset =
-                        this.ApplyLoader<T>(info, operations?.LoadOperations)
-                        ?? new AssetDataForObject(info, this.RawLoad<T>(assetName, useCache), this.AssertAndNormalizeAssetName, this.Reflection);
-                    asset = this.ApplyEditors<T>(info, asset, operations?.EditOperations);
+
+                    IAssetData asset;
+                    //Console.WriteLine("qwe;");
+                    //Console.WriteLine("qwe;");
+                    //Console.WriteLine("qwe; start load asset; " + assetName.Name);
+                    //if (assetName.Name.Contains(".th") == false)
+                    {
+                        asset = this.ApplyLoader<T>(info, operations?.LoadOperations)
+                           ?? new AssetDataForObject(info, this.RawLoad<T>(assetName, useCache), this.AssertAndNormalizeAssetName, this.Reflection);
+                        asset = this.ApplyEditors<T>(info, asset, operations?.EditOperations);
+                        return (T)asset.Data;
+                    }
+
+
+                    try
+                    {
+                        if (operations == null)
+                            Console.WriteLine("qwe; asset operations is null");
+                        else
+                        {
+                            foreach (var op in operations?.LoadOperations)
+                                Console.WriteLine("qwe; Load Operation:: Mod= " + op.Mod.DisplayName);
+                            foreach (var op in operations?.EditOperations)
+                                Console.WriteLine("qwe; Edit Operation:: Mod= " + op.Mod.DisplayName);
+                        }
+                        Console.WriteLine("qwe; trying ApplyLoader;");
+                        Console.WriteLine("qwe; return data type= " + info.DataType);
+                        //foreach (var f in new StackTrace().GetFrames())
+                        //Console.WriteLine($"qwe; frame= {f.GetMethod().FullName()}");
+                        var assetFromLoader = ApplyLoader<T>(info, operations?.LoadOperations);
+                        if (assetFromLoader != null)
+                        {
+                            asset = assetFromLoader;
+                            Console.WriteLine("qwe; Done ApplyLoader; " + assetFromLoader.Name);
+                        }
+                        else
+                        {
+
+                            Console.WriteLine("qwe; failed load with ApplyLoader()");
+                            Console.WriteLine("qwe; try load with RawLoad()..");
+                            try
+                            {
+                                var rawLoad = RawLoad<T>(assetName, useCache);
+                                Console.WriteLine("qwe; done load by RawLoad; " + rawLoad);
+                                asset = new AssetDataForObject(info, rawLoad,
+                                    AssertAndNormalizeAssetName, this.Reflection);
+                            }
+                            catch (Exception ex2)
+                            {
+                                Console.WriteLine("qwe; error RawLoad()");
+                                //Console.WriteLine("qwe; " + ex2.GetLogSummary());
+                                //foreach (var f in new System.Diagnostics.StackTrace().GetFrames())
+                                //    Console.WriteLine($"qwe; frame= {f.GetMethod().FullName()}");
+                                throw ex2;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("qwe; error try to LoadAsset");
+                        Console.WriteLine("qwe; return & throw ex; " + ex.Message);
+                        throw ex;
+                    }
+
+                    try
+                    {
+
+                        Console.WriteLine("qwe; trying ApplyEditors()");
+                        asset = this.ApplyEditors<T>(info, asset, operations?.EditOperations);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("qwe; error ApplyEditors(); " + ex);
+                        throw ex;
+                    }
+                    Console.WriteLine("qwe; done LoadExact<T>(); " + assetName.Name);
+
                     return (T)asset.Data;
                 });
             }
@@ -183,7 +272,10 @@ namespace StardewModdingAPI.Framework.ContentManagers
                 loaderObject = loadOperations.OrderByDescending(p => p.Priority).FirstOrDefault();
             }
             if (loaderObject == null)
+            {
+                //Console.WriteLine("qwe; ApplyLoader:: load asset is null");
                 return null;
+            }
 
             // fetch asset from loader
             var loader = loaderObject.Value;

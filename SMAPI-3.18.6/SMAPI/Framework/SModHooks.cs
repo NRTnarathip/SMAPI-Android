@@ -1,7 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace StardewModdingAPI.Framework
 {
@@ -42,18 +43,22 @@ namespace StardewModdingAPI.Framework
         /// <inheritdoc />
         public override Task StartTask(Task task, string id)
         {
+            var st = Stopwatch.StartNew();
             this.Monitor.Log($"Synchronizing '{id}' task...");
             task.RunSynchronously();
-            this.Monitor.Log("   task complete.");
+            this.Monitor.Log($"   taskID: {id} complete, use time: {st.Elapsed.TotalSeconds} seconds");
+            st.Stop();
             return task;
         }
 
         /// <inheritdoc />
         public override Task<T> StartTask<T>(Task<T> task, string id)
         {
+            var st = Stopwatch.StartNew();
             this.Monitor.Log($"Synchronizing '{id}' task...");
             task.RunSynchronously();
-            this.Monitor.Log("   task complete.");
+            st.Stop();
+            this.Monitor.Log($"   taskID: {id} complete, use time: {st.Elapsed.TotalMilliseconds} seconds");
             return task;
         }
     }
