@@ -97,6 +97,9 @@
     <Reference Include="System.Data">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Diagnostics.Debug">
+      <HintPath>..\..\packages\System.Diagnostics.Debug.4.3.0\ref\netcore50\System.Diagnostics.Debug.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Compression">
       <Private>True</Private>
     </Reference>

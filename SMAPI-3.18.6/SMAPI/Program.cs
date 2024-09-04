@@ -35,7 +35,6 @@ namespace StardewModdingAPI
             OnCreatePartTwoPatcher.Init();
             StringSplitPatcher.Init();
             FolderPicker.Init();
-            Game1Patcher.Init();
 
             new Harmony(typeof(Program).FullName).PatchAll();
         }
