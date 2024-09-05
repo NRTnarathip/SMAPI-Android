@@ -156,6 +156,7 @@
     <Compile Include="AndroidExtens\GameRewriter\OptionsPageFacade.cs" />
     <Compile Include="AndroidExtens\GameRewriter\SoundBankRewriter.cs" />
     <Compile Include="AndroidExtens\MainActivityPatcher.cs" />
+    <Compile Include="AndroidExtens\ModsFolderSelector.cs" />
     <Compile Include="AndroidExtens\ModsRewriter\SVERewriter.cs" />
     <Compile Include="AndroidExtens\NotifyTool.cs" />
     <Compile Include="AndroidExtens\OnCreatePartTwoPatcher.cs" />

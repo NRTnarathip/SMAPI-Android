@@ -102,7 +102,7 @@ namespace StardewModdingAPI
         static SCore core;
         internal static void Start()
         {
-            string modsPath = Path.Combine(Constants.GamePath, "Mods");
+            var modsPath = ModsFolderSelector.GetModsFolderFullPath();
             core = new(modsPath, false, false);
             core.RunInteractively();
         }

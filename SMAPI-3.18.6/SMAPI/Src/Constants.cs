@@ -98,8 +98,6 @@ namespace StardewModdingAPI
 #endif
 
         /// <summary>The path to the game folder.</summary>
-        //path return Folder of StardewModdingAPI.dll
-        //SMAPI-Game
         public static string GamePath { get; } = EarlyConstants.GamePath;
         public static string SavesPath { get; } = GamePath.Replace("/SMAPI-Game", "");
         public static string ExternalFilesDir => SavesPath.Replace("/Saves", "");
