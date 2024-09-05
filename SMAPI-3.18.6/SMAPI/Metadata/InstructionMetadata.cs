@@ -162,7 +162,8 @@ namespace StardewModdingAPI.Metadata
                     .MapFacade<ICue, ICueFacde>()
                     .MapFacade<Game1, Game1Facade>();
 
-                yield return new TypeRewriter("StardewValley.Menus.CraftingPage", typeof(CraftingPageMobileRewriter));
+                yield return new TypeRewriter("StardewValley.Menus.CraftingPage",
+                    typeof(CraftingPageMobileRewriter));
                 yield return new SoundBankRewriter("patch soundBank");
                 yield return new MapMethodToStaticMethodRewriter()
                     .Add(typeof(OptionsElement), (method) => method.Name == "draw",
